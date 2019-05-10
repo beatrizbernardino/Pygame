@@ -16,7 +16,7 @@ FPS=30
 
 
 pygame.init()
-screen=pygame.display.set_mode((WIDTH,HEIGHT))
+win=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("nosso jogo")
 clock=pygame.time.Clock()
 all_sprites=pygame.sprite.Group()
@@ -62,11 +62,11 @@ class Player(pygame.sprite.Sprite):
        
 
 
-p=pygame.sprite.Group()
+#p=pygame.sprite.Group()
   
       
 running=True 
-count=0
+count=0         
 while running:
     clock.tick(FPS)
     
@@ -74,18 +74,20 @@ while running:
         
         player= Player(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
         all_sprites.add(player)
-        p.add(player)
+#        p.add(player)
         count=0
     
         
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running=False
-    all_sprites.update()        
-    screen.fill(AZUL) 
-    all_sprites.draw(screen) 
-    pygame.display.flip()
     count+=1
+       
+    all_sprites.update()        
+    win.fill(AZUL) 
+    all_sprites.draw(win) 
+    pygame.display.flip()
+
 pygame.quit()
 quit()
     
