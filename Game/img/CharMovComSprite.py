@@ -1,26 +1,22 @@
 # -*- coding: utf-8 -*-
 """
+Created on Fri May 10 07:50:54 2019
+
+@author: Vitor Bandeira
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Mon May  6 16:49:38 2019
 
 @author: Vitor Bandeira
 """
 
 import pygame
-pygame.init()
 
-#width=900
-#height=600
-win = pygame.display.set_mode((900,600))
-pygame.display.set_caption("Projeto Final")
-walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
-walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
-bg = pygame.image.load('bg.jpg')
-char = pygame.image.load('standing.png')
-
-clock = pygame.time.Clock()
-
-class player(object):
+class player(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height):
+        pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
         self.width = width
@@ -33,7 +29,7 @@ class player(object):
         self.jumpCount = 10
         self.standing = True
         
-    def draw(self,win):
+    def update(self,win):
         if self.walkCount +1 >= 27:
             self.walkCount = 0
         if not(self.standing):
@@ -49,8 +45,9 @@ class player(object):
             else:
                 win.blit(walkLeft[0], (self.x,self.y))
 
-class projetil(object):
+class projetil(pygame.sprite.Sprite):
     def __init__(self,x,y,radius,color,facing):
+        pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
         self.radius = radius
@@ -58,18 +55,41 @@ class projetil(object):
         self.facing = facing
         self.vel = 20 * facing
            
-    def draw(self,win):
+    def update(self,win):
         pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
      
+
+pygame.init()
+
+width=900
+height=600
+win = pygame.display.set_mode((900,600))
+pygame.display.set_caption("Projeto Final")
+walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
+walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
+bg = pygame.image.load('bg.jpg')
+char = pygame.image.load('standing.png')
+
+clock = pygame.time.Clock()
+
+
+man=player(1,510,64,64)
+projeteis=[]
+all_sprites = pygame.sprite.Group()
+
 def RestaurarJanela():
     win.blit(bg, (0,0))
-    man.draw(win)
+    #all_sprites.draw(win)
+    man.update(win)
+    #all_sprites.update()
     for proj in projeteis:
-        proj.draw(win)
+        proj.update(win)
     pygame.display.update()
-
-man=player(1,510,64,64)# oq e esses 64
+    
+man=player(1,510,64,64)
 projeteis=[]
+
+
 run = True
 
 while run:
@@ -125,6 +145,8 @@ while run:
             man.pulo = False
             
     RestaurarJanela()
-        
+    all_sprites.draw(win)
+    all_sprites.update()    
     
 pygame.quit()
+quit()
