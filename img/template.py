@@ -4,8 +4,8 @@ import random
 
 img_dir = path.join(path.dirname(__file__),)
 
-width=500
-height=500
+width=900
+height=900
 fps=30 # frames per second
 
 
@@ -76,11 +76,11 @@ class Platform(pygame.sprite.Sprite):
 for i in range (4):
     
     if i==0:
-        p1=Platform(30-width/2+i*50,height-400,50,20,'left')
+        p1=Platform(width/2-95+i*70,height-400,70,50,'left')
     elif i==3:
-        p1=Platform(width/2+i*50,height-400,50,20,'right')
+        p1=Platform(width/2-85+i*70,height-400,70,50,'right')
     else:
-        p1=Platform(width/2+i*50,height-400,50,20,'middle')
+        p1=Platform(width/2-85+i*70,height-400,70,50,'middle')
         
     all_sprites.add(p1)
     
@@ -107,31 +107,31 @@ all_sprites.add(player)
 
 
 
-#class Enemy(pygame.sprite.Sprite):
-   # def __init__(self): #a funçao que define qual codigo sera executado sempre que um novo objeto desse tipo for criado
-       # pygame.sprite.Sprite.__init__(self)#inicializador de classe
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self): #a funçao que define qual codigo sera executado sempre que um novo objeto desse tipo for criado
+        pygame.sprite.Sprite.__init__(self)#inicializador de classe
         
-       # enemy_img = pygame.image.load(path.join(img_dir, 'p3_jump.png')).convert()
-        #self.image = enemy_img
-        #self.image.set_colorkey(black)
-        #self.rect=self.image.get_rect() #rect é retangulo
-        #self.rect.y = random.randrange(0,height)
-        #self.rect.x = random.randrange(0,8)
-        #self.speedx =random.randrange(2,15)
-        #self.speedy =random.randrange(1,2)
+        enemy_img = pygame.image.load(path.join(img_dir, 'p3_jump.png')).convert()
+        self.image = enemy_img
+        self.image.set_colorkey(black)
+        self.rect=self.image.get_rect() #rect é retangulo
+        self.rect.y = random.randrange(0,height)
+        self.rect.x = random.randrange(0,8)
+        self.speedx =random.randrange(2,15)
+        self.speedy =random.randrange(1,2)
         
-   # def update(self):
-    #    if(self.rect.x - 16 > width/2):
-     #      self.rect.x -= self.speedx
+     def update(self):
+        if(self.rect.x - 16 > width/2):
+           self.rect.x -= self.speedx
         
-     #   elif(self.rect.x + 16 < width/2):
-      #     self.rect.x += self.speedx
+        elif(self.rect.x + 16 < width/2):
+           self.rect.x += self.speedx
        
-       # if(self.rect.y - 16 > height/2):
-        #   self.rect.y -= self.speedy
+        if(self.rect.y - 16 > height/2):
+           self.rect.y -= self.speedy
         
-        #elif(self.rect.y + 16 < height/2):
-         #  self.rect.y += self.speedy
+        elif(self.rect.y + 16 < height/2):
+           self.rect.y += self.speedy
 
 
 #p=pygame.sprite.Group()      
@@ -152,11 +152,11 @@ while jogando:
     
     clock.tick(fps)
     
-    #if count==6:
-     #   enemy= Enemy()
-     #   all_sprites.add(enemy)
+    if count==6:
+        enemy= Enemy()
+       all_sprites.add(enemy)
        # p.add(enemy)
-      #  count=0
+        count=0
 
     
     for event in pygame.event.get():

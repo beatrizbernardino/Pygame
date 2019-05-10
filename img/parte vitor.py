@@ -46,7 +46,7 @@ class player(pygame.sprite.Sprite):
         self.jumpCount = 10
         self.standing = True
         
-    def draw(self,win):
+    def update(self,win):
         if self.walkCount +1 >= 27:
             self.walkCount = 0
         if not(self.standing):
@@ -142,14 +142,14 @@ class projetil(pygame.sprite.Sprite):
         self.facing = facing
         self.vel = 20 * facing
         
-    def draw(self,win):
+    def update(self,win):
         pygame.draw.circle(win,self.color,(self.x,self.y), self.radius)
 
 def RestaurarJanela():
     win.blit(bg, (0,0))
-    man.draw(win)
+    man.update(win)
     for proj in projeteis:
-        proj.draw(win)
+        proj.update(win)
     pygame.display.update()
     all_sprites.update()
     all_sprites.draw(win)
