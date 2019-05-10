@@ -70,14 +70,14 @@ class Platform(pygame.sprite.Sprite):
         
         self.rect.centerx=x
         self.rect.bottom=y
- 
+        self.image.set_colorkey(black)
    
     
 for i in range (4):
     
-    if i==1:
-        p1=Platform(width/2+i*50,height-400,50,20,'left')
-    elif i==4:
+    if i==0:
+        p1=Platform(30-width/2+i*50,height-400,50,20,'left')
+    elif i==3:
         p1=Platform(width/2+i*50,height-400,50,20,'right')
     else:
         p1=Platform(width/2+i*50,height-400,50,20,'middle')
