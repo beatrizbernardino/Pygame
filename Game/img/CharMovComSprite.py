@@ -3,12 +3,13 @@ Created on Mon May  6 16:49:38 2019
 
 @author: Vitor Bandeira
 """
-
+import random
 import pygame
 from os import path
 pygame.init()
 
-
+WIDTH=600
+HEIGHT=600
 width=900
 height=600
 win = pygame.display.set_mode((900,600))
@@ -18,13 +19,10 @@ walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.im
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#walkRight = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.image.load('R3E.png'), pygame.image.load('R4E.png'), pygame.image.load('R5E.png'), pygame.image.load('R6E.png'), pygame.image.load('R7E.png'), pygame.image.load('R8E.png'), pygame.image.load('R9E.png'), pygame.image.load('R10E.png'), pygame.image.load('R11E.png')]
-#walkLeft = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png'), pygame.image.load('L10E.png'), pygame.image.load('L11E.png')]
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 clock = pygame.time.Clock()
 
-
+player_img = pygame.image.load('R8E.png')
 all_sprites=pygame.sprite.Group()
 img_dir=path.join(path.dirname(__file__))
 
@@ -62,6 +60,33 @@ class player(pygame.sprite.Sprite):
             self.hitbox=self.hitbox = (self.x + 17, self.y + 11, 29, 52)
             pygame.draw.rect(win,(255,0,0), self.hitbox,2)#para desenhar o hit box no boneco. ta no update pois tem q atualizar toda vez que ele anda
 
+class enemy(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = player_img
+        self.image.set_colorkey((0,0,0))
+        self.rect=self.image.get_rect() 
+        self.rect.y = y 
+        self.rect.x = x
+        self.speedx = 10 
+        self.speedy = 10 
+        
+    def update(self):
+        WIDTH=900 
+        HEIGHT=600    
+        if(self.rect.x - 16 > WIDTH/2):
+           self.rect.x -= self.speedx
+        
+        elif(self.rect.x + 16 < WIDTH/2):
+           self.rect.x += self.speedx
+       
+        if(self.rect.y - 16 > HEIGHT/2):
+           self.rect.y -= self.speedy
+        
+        elif(self.rect.y + 16 < HEIGHT/2):
+           self.rect.y += self.speedy
+
+
 class inimigo(pygame.sprite.Sprite):
     walkRight = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.image.load('R3E.png'), pygame.image.load('R4E.png'), pygame.image.load('R5E.png'), pygame.image.load('R6E.png'), pygame.image.load('R7E.png'), pygame.image.load('R8E.png'), pygame.image.load('R9E.png'), pygame.image.load('R10E.png'), pygame.image.load('R11E.png')]
     walkLeft= [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png'), pygame.image.load('L10E.png'), pygame.image.load('L11E.png')]
@@ -75,7 +100,7 @@ class inimigo(pygame.sprite.Sprite):
         self.path = [x, end]  #Onde começa e onde termina
         self.walkCount = 0
         self.vel = 3
-        self.hitbox = (self.x + 17, self.y + 2, 31, 57)#EXPLICAÇÃO
+        self.hitbox = (self.x + 17, self.y + 2, 31, 57)
         self.vida=10
         self.visible=True
     def update(self,win):
@@ -91,7 +116,7 @@ class inimigo(pygame.sprite.Sprite):
                 self.walkCount += 1
             pygame.draw.rect(win, (255,0,0), (self.hitbox[0], self.hitbox[1] - 20,50,10))                        #EXPLICAÇÃO
             pygame.draw.rect(win, (0,128,0), (self.hitbox[0], self.hitbox[1] - 20,50 - (5*(10 - self.vida)), 10))#EXPLICAÇÃO
-            self.hitbox = (self.x + 17, self.y + 2, 31, 57)#EXPLICAÇÃO
+            self.hitbox = (self.x + 17, self.y + 2, 31, 57)
     def move(self):
         if self.vel > 0:
             if self.x < self.path[1] + self.vel:
@@ -126,6 +151,8 @@ class projetil(pygame.sprite.Sprite):
            
     def update(self,win):
         pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
+        
+
  
 class Platform(pygame.sprite.Sprite):
 
@@ -149,35 +176,64 @@ class Platform(pygame.sprite.Sprite):
         self.rect.bottom=y
         self.image.set_colorkey((0,0,0))
    
-for i in range (4):
-    
-    if i==0:
-        p1=Platform(width/2-95+i*70,height-400,70,50,'left')
-    elif i==3:
-        p1=Platform(width/2-85+i*70,height-400,70,50,'right')
-    else:
-        p1=Platform(width/2-85+i*70,height-400,70,50,'middle')
-        
-    all_sprites.add(p1)    
 
+for i in range (3):
+    if i==0:
+        for i in range (4):
+    
+            if i==0:
+                p1=Platform(width/2-150+i*100,height-120,100,50,'left')
+            elif i==3:
+                p1=Platform(width/2-150+i*100,height-120,100,50,'right')
+            else:
+                p1=Platform(width/2-150+i*100,height-120,100,50,'middle')
+        
+            all_sprites.add(p1)
+        
+    if i ==1:
+         for i in range (4):
+    
+            if i==0:
+                p1=Platform(width/2-400+i*70,height-300,70,45,'left')
+            elif i==3:
+                p1=Platform(width/2-400+i*70,height-300,70,45,'right')
+            else:
+                p1=Platform(width/2-400+i*70,height-300,70,45,'middle')
+        
+            all_sprites.add(p1)
+    if i ==2:
+        
+         for i in range (4):
+    
+            if i==0:
+                p1=Platform(width/2+190+i*70,height-300,70,45,'left')
+            elif i==3:
+                p1=Platform(width/2+190+i*70,height-300,70,45,'right')
+            else:
+                p1=Platform(width/2+190+i*70,height-300,70,45,'middle')
+        
+            all_sprites.add(p1)
+            
 def RestaurarJanela():
     win.blit(bg, (0,0))
-    #all_sprites.draw(win)
+    all_sprites.draw(win)
     man.update(win)
-    #all_sprites.update()
+    all_sprites.update()
     inimg.update(win)
+    #plat.update(win)
     text=font.render("Score: " + str(score), 1, (255,215,0))
     win.blit(text,(750,10))
     for proj in projeteis:
         proj.update(win)
     pygame.display.update()
 
+#plat=Platform
 inimg= inimigo(1,510,64,64,800)    
 man=player(1,510,64,64)
 projeteis=[]
 score=0
 font = pygame.font.SysFont("comicsana",40,True)
-
+count=0
 run = True
 
 while run:
@@ -238,6 +294,12 @@ while run:
         else:
             man.jumpCount = 10
             man.pulo = False
+    if count == 10:
+        
+        player= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
+        all_sprites.add(player)
+        count=0
+    count+=1
             
     RestaurarJanela()
     all_sprites.draw(win)
