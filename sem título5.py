@@ -20,7 +20,6 @@ win=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("nosso jogo")
 clock=pygame.time.Clock()
 all_sprites=pygame.sprite.Group()
-
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, 'img')
 player_img = pygame.image.load(os.path.join(img_folder, 'p3_jump.png')).convert()
@@ -62,11 +61,13 @@ class Player(pygame.sprite.Sprite):
        
 
 
-#p=pygame.sprite.Group()
+
   
       
 running=True 
+
 count=0         
+
 while running:
     clock.tick(FPS)
     
@@ -74,7 +75,6 @@ while running:
         
         player= Player(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
         all_sprites.add(player)
-#        p.add(player)
         count=0
     
         
