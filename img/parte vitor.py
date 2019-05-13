@@ -82,7 +82,7 @@ class Platform(pygame.sprite.Sprite):
         self.rect.centerx=x
         self.rect.bottom=y
         self.image.set_colorkey(white)
-   
+        self.image.set_colorkey(black)
     
     
 p1=Platform(width/2,height-400,50,20)

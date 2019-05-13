@@ -74,7 +74,7 @@ class Platform(pygame.sprite.Sprite):
 
 
 
-for i in range (3):
+for i in range (4):
     if i==0:
         for i in range (4):
     
@@ -110,8 +110,11 @@ for i in range (3):
                 p1=Platform(width/2+190+i*70,height-400,70,60,'middle')
         
             all_sprites.add(p1)
-    
-
+    if i ==3:
+        
+        p1=Platform(width/2,height,900,30,'middle')
+        
+        all_sprites.add(p1)
     
 #player_img=pygame.image.load(path.join(img_dir,'grassCliffLeftAlt.png')).convert()    
 #p2=Platform(width/2+50,height-350,50,20)
