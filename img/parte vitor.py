@@ -146,7 +146,7 @@ class projetil(pygame.sprite.Sprite):
         pygame.draw.circle(win,self.color,(self.x,self.y), self.radius)
 
 def RestaurarJanela():
-    win.blit(bg, (0,0))
+    win.blit(bg, (0,0)) 
     man.update(win)
     for proj in projeteis:
         proj.update(win)
