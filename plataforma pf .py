@@ -1,9 +1,15 @@
 class Platform(pygame.sprite.Sprite):
 
-    def __init__(self,x,y,w,h):
+    def __init__(self,x,y,w,h, tipo):
         pygame.sprite.Sprite.__init__(self)
-        
-        player_img=pygame.image.load(path.join(img_dir,'grassMid.png')).convert()
+        filename = ''
+        if tipo == 'left':
+            filename = 'grassCliffLeftAlt.png'
+        elif tipo == 'right':
+            filename = 'grassCliffRightAlt.png'
+        elif tipo== "middle":
+           filename='grassMid.png'
+        player_img=pygame.image.load(path.join(img_dir,filename)).convert()
         self.image=player_img
         
         self.image=pygame.transform.scale(player_img,(w,h))
@@ -12,24 +18,16 @@ class Platform(pygame.sprite.Sprite):
         
         self.rect.centerx=x
         self.rect.bottom=y
-        
- 
-        
-        
-  
-player=Player()
-all_sprites.add(player)
-
-
-for i in range(3):
-    p1=Platform(10,height-400,20,10)
+        self.image.set_colorkey(black)
+   
     
-       
-p1=Platform(width/2,height-400,500,100)
-all_sprites.add(p1)
-p2=Platform(100,height-200,250,100)
-all_sprites.add(p2)
-p3=Platform(width-100,height-200,250,100)
-p4=Platform(width/2,height,width,50)
-all_sprites.add(p3)
-all_sprites.add(p4)
+for i in range (4):
+    
+    if i==0:
+        p1=Platform(width/2-95+i*70,height-400,70,50,'left')
+    elif i==3:
+        p1=Platform(width/2-85+i*70,height-400,70,50,'right')
+    else:
+        p1=Platform(width/2-85+i*70,height-400,70,50,'middle')
+        
+    all_sprites.add(p1)
