@@ -177,7 +177,7 @@ class inimigo(pygame.sprite.Sprite):
         if self.vida>0:
             self.vida -=1
         else:
-            self.visible = False
+            self.kill = True
         print("hit")
     
 class projetil(pygame.sprite.Sprite):
@@ -218,7 +218,7 @@ class Platform(pygame.sprite.Sprite):
         self.image.set_colorkey((0,0,0))
    
 
-for i in range (3):
+for i in range (4):
     if i==0:
         for i in range (4):
     
@@ -252,9 +252,12 @@ for i in range (3):
                 p1=Platform(width/2+190+i*70,height-300,70,45,'right')
             else:
                 p1=Platform(width/2+190+i*70,height-300,70,45,'middle')
-        
             all_sprites.add(p1)
-            
+    if i ==3:
+        
+        p1=Platform(width/2,height,900,30,'middle')
+        
+        all_sprites.add(p1)
 def RestaurarJanela():
     win.blit(bg, (0,0))
     all_sprites.draw(win)
