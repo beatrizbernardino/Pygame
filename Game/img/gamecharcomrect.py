@@ -1,8 +1,3 @@
-"""
-Created on Mon May  6 16:49:38 2019
-
-@author: Vitor Bandeira
-"""
 import random
 import pygame
 from os import path
@@ -33,7 +28,6 @@ class player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
-        self.jumping = False
         self.width = width
         self.height = height
         self.vel = 5
@@ -65,24 +59,6 @@ class player(pygame.sprite.Sprite):
             self.rect = pygame.Rect(self.x + 17, self.y + 11, 29, 52)
             pygame.draw.rect(win,(255,0,0), self.hitbox,2)#para desenhar o hit box no boneco. ta no update pois tem q atualizar toda vez que ele anda
 
-
-    def jump_cut(self):
-        if self.jumping:
-            if self.vel.y < -3:
-                self.vel.y = -3
-    
-    
-    
-    def jump(self):
-        self.image.y += 2
-        hits = pygame.sprite.spritecollide(self, Platform, False)
-        self.image.y -= 2
-        if hits and not self.jumping:
-            self.jumping = True
-            self.vel.y = -20
-
-
-
 class enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -97,25 +73,8 @@ class enemy(pygame.sprite.Sprite):
         self.heroy = HEIGHT//2
         
     def update(self):
-        
-        if(self.rect.x - 16 > player.rect.x/2):
-           self.rect.x -= self.speedx
-        
-        elif(self.rect.x + 16 < player.rect.x/2):
-           self.rect.x += self.speedx
-       
-        if(self.rect.y - 16 > player.rect.y/2):
-           self.rect.y -= self.speedy
-        
-        elif(self.rect.y + 16 < player.rect.y/2):
-   
-        
-
-           
-           
-    def sethero(self, x, y):
-        self.herox = x
-        self.heroy = y
+        #WIDTH=900 
+        #HEIGHT=600    
         if(self.rect.x - 16 > self.herox):
            self.rect.x -= self.speedx
         
@@ -127,6 +86,11 @@ class enemy(pygame.sprite.Sprite):
         
         elif(self.rect.y + 16 < self.heroy):
            self.rect.y += self.speedy
+           
+    def sethero(self, x, y):
+        self.herox = x
+        self.heroy = y
+
 
 class inimigo(pygame.sprite.Sprite):
     walkRight = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.image.load('R3E.png'), pygame.image.load('R4E.png'), pygame.image.load('R5E.png'), pygame.image.load('R6E.png'), pygame.image.load('R7E.png'), pygame.image.load('R8E.png'), pygame.image.load('R9E.png'), pygame.image.load('R10E.png'), pygame.image.load('R11E.png')]
@@ -326,41 +290,6 @@ try:
             man.standing= True
             walkCount = 0
         
-        player= enemy(random.randrange(0,player.rect.x), random.randrange(0,player.rect.y))
-        all_sprites.add(player)
-        count=0
-    count+=1
-            
-    RestaurarJanela()
-    all_sprites.draw(win)
-    all_sprites.update()    
-pygame.quit()
-quit()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
         if not(man.pulo):
             if keys[pygame.K_w]:
                 man.pulo = True
@@ -392,4 +321,3 @@ quit()
 finally:
     pygame.quit()
     quit()
->>>>>>> 5878592bf5bb53b6e0b8cae99aea4a87d8f30c1a
