@@ -31,6 +31,7 @@ class player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
+        self.jumping = False
         self.width = width
         self.height = height
         self.vel = 5
@@ -60,6 +61,24 @@ class player(pygame.sprite.Sprite):
             self.hitbox=self.hitbox = (self.x + 17, self.y + 11, 29, 52)
             pygame.draw.rect(win,(255,0,0), self.hitbox,2)#para desenhar o hit box no boneco. ta no update pois tem q atualizar toda vez que ele anda
 
+
+    def jump_cut(self):
+        if self.jumping:
+            if self.vel.y < -3:
+                self.vel.y = -3
+    
+    
+    
+    def jump(self):
+        self.image.y += 2
+        hits = pygame.sprite.spritecollide(self, Platform, False)
+        self.image.y -= 2
+        if hits and not self.jumping:
+            self.jumping = True
+            self.vel.y = -20
+
+
+
 class enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -72,18 +91,17 @@ class enemy(pygame.sprite.Sprite):
         self.speedy = 10 
         
     def update(self):
-        WIDTH=900 
-        HEIGHT=600    
-        if(self.rect.x - 16 > WIDTH/2):
+        
+        if(self.rect.x - 16 > player.rect.x/2):
            self.rect.x -= self.speedx
         
-        elif(self.rect.x + 16 < WIDTH/2):
+        elif(self.rect.x + 16 < player.rect.x/2):
            self.rect.x += self.speedx
        
-        if(self.rect.y - 16 > HEIGHT/2):
+        if(self.rect.y - 16 > player.rect.y/2):
            self.rect.y -= self.speedy
         
-        elif(self.rect.y + 16 < HEIGHT/2):
+        elif(self.rect.y + 16 < player.rect.y/2):
            self.rect.y += self.speedy
 
 
@@ -296,7 +314,7 @@ while run:
             man.pulo = False
     if count == 10:
         
-        player= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
+        player= enemy(random.randrange(0,player.rect.x), random.randrange(0,player.rect.y))
         all_sprites.add(player)
         count=0
     count+=1
@@ -306,3 +324,27 @@ while run:
     all_sprites.update()    
 pygame.quit()
 quit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
