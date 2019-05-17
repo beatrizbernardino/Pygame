@@ -182,7 +182,7 @@ class Platform(pygame.sprite.Sprite):
         self.image.set_colorkey((0,0,0))
    
 
-for i in range (3):
+for i in range (4):
     if i==0:
         for i in range (4):
     
@@ -216,8 +216,12 @@ for i in range (3):
                 p1=Platform(width/2+190+i*70,height-300,70,45,'right')
             else:
                 p1=Platform(width/2+190+i*70,height-300,70,45,'middle')
-        
             all_sprites.add(p1)
+    if i ==3:
+        
+        p1=Platform(width/2,height,900,30,'middle')
+        
+        all_sprites.add(p1)
             
 def RestaurarJanela():
     win.blit(bg, (0,0))
@@ -245,7 +249,7 @@ try:
     while run:
         clock.tick(27)
         
-        hits = pygame.sprite.groupcollide(all_sprites, playergroup, False, True)
+        hits = pygame.sprite.groupcollide(all_sprites, playergroup, False, False)
         for hit in hits:
             print("bateu")
     
@@ -305,7 +309,7 @@ try:
                 man.jumpCount = 10
                 man.pulo = False
                 
-        if count == 10:
+        if count == 100:
             
             en= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
             enemygroup.add(en)
