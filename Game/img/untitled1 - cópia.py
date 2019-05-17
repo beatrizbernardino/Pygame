@@ -19,6 +19,7 @@ clock = pygame.time.Clock()
 
 player_img = pygame.image.load('R8E.png')
 all_sprites=pygame.sprite.Group()
+a=pygame.sprite.Group()
 playergroup = pygame.sprite.Group()
 enemygroup = pygame.sprite.Group()
 img_dir=path.join(path.dirname(__file__))
@@ -222,6 +223,7 @@ for i in range (3):
 def RestaurarJanela():
     win.blit(bg, (0,0))
     all_sprites.draw(win)
+    a.update()
     man.update(win)
     all_sprites.update()
     inimg.update(win)
@@ -271,11 +273,13 @@ try:
         if keys[pygame.K_SPACE]:
             if man.left:
                 facing = -1
+                projeteiss=projetil(round(man.x+man.width//2),round(man.y+man.height//2),(0,0,0),facing)#EXPLICAÇÃO
+                a.append(projeteiss)
             else:
                 facing = 1
             if len(projeteis) <1:
-                projeteis.append(projetil(round(man.x+man.width//2),round(man.y+man.height//2),6,(0,0,0),facing))#EXPLICAÇÃO
-        
+                projeteiss=projetil(round(man.x+man.width//2),round(man.y+man.height//2),(0,0,0),facing)#EXPLICAÇÃO
+                a.append(projeteiss)
         if keys[ pygame.K_a] and man.x>man.vel:
             man.x -= man.vel
             man.left= True

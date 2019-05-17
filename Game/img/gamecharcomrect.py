@@ -14,11 +14,14 @@ walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.im
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
+pew=pygame.image.load("tiro.png")
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 clock = pygame.time.Clock()
 
 player_img = pygame.image.load('R8E.png')
 all_sprites=pygame.sprite.Group()
+all_platforms=pygame.sprite.Group()
+projeteiss=pygame.sprite.Group()
 playergroup = pygame.sprite.Group()
 enemygroup = pygame.sprite.Group()
 img_dir=path.join(path.dirname(__file__))
@@ -147,16 +150,21 @@ class inimigo(pygame.sprite.Sprite):
 class projetil(pygame.sprite.Sprite):
     def __init__(self,x,y,radius,color,facing):
         pygame.sprite.Sprite.__init__(self)
-        self.x = x
-        self.y = y
+        self.image=pew
+        self.image.set_colorkey((0,0,0))
+        self.rect=self.image.get_rect()
+        self.rect.bottom=y
+        self.rect.centerx=x
+        self.speedx=20*facing
         self.radius = radius
         self.color = color
         self.facing = facing
-        self.vel = 20 * facing
-           
+
     def update(self,win):
         pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
-        
+        self.rect.x+=self.speedx
+        if self.rect.right>width or self.rect.left<0:
+            self.kill()
 
  
 class Platform(pygame.sprite.Sprite):
@@ -176,13 +184,13 @@ class Platform(pygame.sprite.Sprite):
         self.image=pygame.transform.scale(player_img,(w,h))
         
         self.rect=self.image.get_rect()
-        
+        self.y=self.rect.top
         self.rect.centerx=x
         self.rect.bottom=y
         self.image.set_colorkey((0,0,0))
    
 
-for i in range (3):
+for i in range (4):
     if i==0:
         for i in range (4):
     
@@ -194,7 +202,7 @@ for i in range (3):
                 p1=Platform(width/2-150+i*100,height-120,100,50,'middle')
         
             all_sprites.add(p1)
-        
+            all_platforms.add(p1)
     if i ==1:
          for i in range (4):
     
@@ -204,8 +212,9 @@ for i in range (3):
                 p1=Platform(width/2-400+i*70,height-300,70,45,'right')
             else:
                 p1=Platform(width/2-400+i*70,height-300,70,45,'middle')
-        
+            
             all_sprites.add(p1)
+            all_platforms.add(p1)
     if i ==2:
         
          for i in range (4):
@@ -218,17 +227,33 @@ for i in range (3):
                 p1=Platform(width/2+190+i*70,height-300,70,45,'middle')
         
             all_sprites.add(p1)
+            all_platforms.add(p1)
             
+    if i ==3:
+        
+         for i in range (4):
+    
+            if i==0:
+                p1=Platform(0,height-10,width,20,'left')
+            elif i==3:
+                p1=Platform(0,height-10,width,20,'right')
+            else:
+                p1=Platform(width/2,height,900,30,'middle')
+        
+            all_sprites.add(p1)
+            all_platforms.add(p1)
 def RestaurarJanela():
     win.blit(bg, (0,0))
     all_sprites.draw(win)
     man.update(win)
     all_sprites.update()
     inimg.update(win)
+    all_platforms.update()
     text=font.render("Score: " + str(score), 1, (255,215,0))
     win.blit(text,(750,10))
     for proj in projeteis:
         proj.update(win)
+       
     pygame.display.update()
 
 
@@ -236,6 +261,7 @@ inimg= inimigo(1,510,64,64,800)
 man=player(1,510,64,64)
 playergroup.add(man)
 projeteis=[]
+
 score=0
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
@@ -245,9 +271,17 @@ try:
     while run:
         clock.tick(27)
         
-        hits = pygame.sprite.groupcollide(all_sprites, playergroup, False, True)
+        hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
+            if man.pulo:
+                man.y = hit.rect.top - 64
+                man.pulo=False
+           
             print("bateu")
+            
+        if len(hits) == 0:
+            neg = -1
+            man.y -= (10 ** 2) * 0.5 * neg
     
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -272,9 +306,7 @@ try:
                 facing = -1
             else:
                 facing = 1
-            if len(projeteis) <1:
-                projeteis.append(projetil(round(man.x+man.width//2),round(man.y+man.height//2),6,(0,0,0),facing))#EXPLICAÇÃO
-        
+            
         if keys[ pygame.K_a] and man.x>man.vel:
             man.x -= man.vel
             man.left= True
@@ -294,7 +326,8 @@ try:
             if keys[pygame.K_w]:
                 man.pulo = True
                 man.walkCount = 0
-        else:
+                
+        if man.pulo:
             if man.jumpCount >= -10:
                 neg = 1
                 if man.jumpCount < 0:
