@@ -142,7 +142,7 @@ class inimigo(pygame.sprite.Sprite):
             self.vida -=1
         else:
             self.visible = False
-        print("hit")
+#        print("hit")
     
 class projetil(pygame.sprite.Sprite):
     def __init__(self,x,y,radius,color,facing):
@@ -233,6 +233,7 @@ def RestaurarJanela():
     win.blit(text,(750,10))
     for proj in projeteis:
         proj.update(win)
+#        all_sprites.add(proj)
     pygame.display.update()
 
 
@@ -244,14 +245,26 @@ score=0
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
-
 try:
+    
+    lives = 4
+    
     while run:
         clock.tick(27)
         
+<<<<<<< HEAD
         hits = pygame.sprite.groupcollide(all_sprites, playergroup, False, False)
         for hit in hits:
             print("bateu")
+=======
+        hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False)
+     
+        if hits:
+            lives -= 1
+            
+            if lives == 0:
+               run= False
+>>>>>>> ab0ab4d80c584ad8914609e9068878ef968df848
     
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -309,7 +322,11 @@ try:
                 man.jumpCount = 10
                 man.pulo = False
                 
+<<<<<<< HEAD
         if count == 100:
+=======
+        if count == 30:
+>>>>>>> ab0ab4d80c584ad8914609e9068878ef968df848
             
             en= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
             enemygroup.add(en)
