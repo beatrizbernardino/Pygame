@@ -183,7 +183,7 @@ class Platform(pygame.sprite.Sprite):
         self.image.set_colorkey((0,0,0))
    
 
-for i in range (3):
+for i in range (4):
     if i==0:
         for i in range (4):
     
@@ -217,8 +217,12 @@ for i in range (3):
                 p1=Platform(width/2+190+i*70,height-300,70,45,'right')
             else:
                 p1=Platform(width/2+190+i*70,height-300,70,45,'middle')
-        
             all_sprites.add(p1)
+    if i ==3:
+        
+        p1=Platform(width/2,height,900,30,'middle')
+        
+        all_sprites.add(p1)
             
 def RestaurarJanela():
     win.blit(bg, (0,0))
@@ -257,6 +261,11 @@ try:
         
         
         
+<<<<<<< HEAD
+        hits = pygame.sprite.groupcollide(all_sprites, playergroup, False, False)
+        for hit in hits:
+            print("bateu")
+=======
         hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False)
      
         if hits:
@@ -264,6 +273,7 @@ try:
             
             if lives == 0:
                run= False
+>>>>>>> ab0ab4d80c584ad8914609e9068878ef968df848
     
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -321,7 +331,15 @@ try:
                 man.jumpCount = 10
                 man.pulo = False
                 
+<<<<<<< HEAD
         if count == 300:
+=======
+<<<<<<< HEAD
+        if count == 100:
+=======
+        if count == 30:
+>>>>>>> ab0ab4d80c584ad8914609e9068878ef968df848
+>>>>>>> d95772a49fa4fc389f4fc340961dea225de3edeb
             
             en= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
             enemygroup.add(en)
