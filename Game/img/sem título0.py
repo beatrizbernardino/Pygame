@@ -23,6 +23,7 @@ bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert()
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+pygame.transform.scale(bg,(900,600))
 clock = pygame.time.Clock()
 
 player_img = pygame.image.load('R8E.png')
@@ -109,8 +110,6 @@ class enemy(pygame.sprite.Sprite):
         self.heroy = HEIGHT//2
         
     def update(self):
-        #WIDTH=900 
-        #HEIGHT=600    
         if(self.rect.x - 16 > self.herox):
            self.rect.x -= self.speedx
         
@@ -184,7 +183,7 @@ class projetil(pygame.sprite.Sprite):
     def __init__(self,x,y,pew):
         pygame.sprite.Sprite.__init__(self)
         self.image=pew
-        self.image = pygame.transform.scale(pew, (30, 20))
+        self.image = pygame.transform.scale(pew, (40, 30))
         self.image.set_colorkey((0,255,0))
         self.rect=self.image.get_rect()
         self.rect.bottom=y
@@ -328,18 +327,13 @@ try:
             if event.type == pygame.QUIT:
                 run = False
     
-        #for proj in projeteis:
-        #    if proj.rect.y - proj.radius < inimg.hitbox[1] + inimg.hitbox[3] and proj.rect.y + proj.radius > inimg.hitbox[1]:     #EXPLICAÇÃO
-       #         if proj.rect.x + proj.radius > inimg.hitbox[0] and proj.rect.x - proj.radius < inimg.hitbox[0] + inimg.hitbox[2]: #EXPLICAÇÃO
-      #              inimg.hit()
-     #               score += 1
-    #                projeteis.pop(projeteis.index(proj))
+#        for proj in projeteis:
+#            if proj.rect.y - proj.radius < inimg.hitbox[1] + inimg.hitbox[3] and proj.rect.y + proj.radius > inimg.hitbox[1]:     #EXPLICAÇÃO
+#                if proj.rect.x + proj.radius > inimg.hitbox[0] and proj.rect.x - proj.radius < inimg.hitbox[0] + inimg.hitbox[2]: #EXPLICAÇÃO
+#                    inimg.hit()
+#                    score += 1
+#                    projeteis.pop(projeteis.index(proj))
             
-            
-   #         if proj.x <900 and proj.x >0:
-  #              proj.x += proj.vel
- #           else:
-#                projeteis.pop(projeteis.index(proj))
                 
         keys = pygame.key.get_pressed()
         
