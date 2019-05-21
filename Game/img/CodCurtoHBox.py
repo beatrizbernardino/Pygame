@@ -10,6 +10,13 @@ import pygame
 from os import path
 pygame.init()
 
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
+
 WIDTH=600
 HEIGHT=600
 width=900
@@ -21,7 +28,7 @@ walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.im
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 bg = pygame.image.load('bg.jpg')
 char = pygame.image.load('standing.png')
-pew = pygame.image.load("tiro.png").convert()
+pew = pygame.image.load("tiro.png").convert_alpha()
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.transform.scale(bg,(900,600))
 clock = pygame.time.Clock()
@@ -45,8 +52,10 @@ class player(pygame.sprite.Sprite):
         self.rect.y=510
         self.speedx=0
         self.pulo = False
-        self.vel = 5
+        self.vel = 10
         self.jumpCount = 10
+        self.direita = False
+        self.esquerda = False
     def update(self):
         self.rect.x += self.speedx
         if self.rect.right > width:
@@ -86,17 +95,17 @@ class enemy(pygame.sprite.Sprite):
 
 
 class projetil(pygame.sprite.Sprite):
-    def __init__(self,x,y,pew):
+    def __init__(self,x,y,pew,facing):
         pygame.sprite.Sprite.__init__(self)
         self.image=pew
-        self.image = pygame.transform.scale(pew, (40, 30))
-        self.image.set_colorkey((0,255,0))
+        self.image = pygame.transform.scale(pew, (70, 50))
+#        self.image.set_colorkey(BLACK)
         self.rect=self.image.get_rect()
         self.rect.bottom=y
         self.rect.centerx=x
-        self.speedx=20
+        self.speedx=20 * facing
         #self.radius = radius
-        #self.facing = facing
+        self.facing = facing
 
     def update(self):
        # pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
@@ -185,11 +194,11 @@ def RestaurarJanela():
     pygame.display.update()
 
 
-inimg= enemy(1,510)    
+#inimg= enemy(1,510)    
 man=player(1,510,64,64)
 playergroup.add(man)
 all_sprites.add(man)
-all_sprites.add(inimg)
+#all_sprites.add(inimg)
 projeteis=[]
 #score=0
 font = pygame.font.SysFont("comicsana",40,True)
@@ -198,7 +207,7 @@ run = True
 
 try:
     
-    lives=4
+    lives=100
     while run:
         clock.tick(27)
         
@@ -217,43 +226,57 @@ try:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-     
-        keys = pygame.key.get_pressed()
-        
-        if keys[pygame.K_SPACE]:
-            bullet=projetil(man.rect.centerx,man.rect.bottom,pew)
-            bullet.rect.centerx=man.rect.x
-            bullet.rect.bottom=man.rect.y + 40
-            projeteis.append(bullet)
-            
-            
-            
-            all_sprites.add(bullet)
-            bullets.add(bullet)
-            
-        if keys[ pygame.K_a]:
-            man.rect.x -= man.vel
-
-
-        elif keys[pygame.K_d]:
-            man.rect.x += man.vel
-
-            
-        
-        if not(man.pulo):
-            if keys[pygame.K_w]:
-                man.pulo = True
-
-        else:
-            if man.jumpCount >= -10:
-                neg = 1
-                if man.jumpCount < 0:
-                    neg = -1
-                man.rect.y -= (man.jumpCount ** 2) * 0.5 * neg
-                man.jumpCount -= 1
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                if man.esquerda:
+                    facing = -1
+                else:
+                    facing = 1
+            if not(man.pulo):
+                if keys[pygame.K_w]:
+                    man.pulo = True
+    
             else:
-                man.jumpCount = 10
-                man.pulo = False
+                if man.jumpCount >= -10:
+                    neg = 1
+                    if man.jumpCount < 0:
+                        neg = -1
+                    man.rect.y -= (man.jumpCount ** 2) * 0.5 * neg
+                    man.jumpCount -= 1
+                else:
+                    man.jumpCount = 10
+                    man.pulo = False
+                    
+                    
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_a:
+                    man.speedx -= man.vel
+                    man.direita = False
+                    man.esquerda= True
+                if event.key == pygame.K_d:
+                    man.speedx += man.vel
+                    man.direita = True
+                    man.esquerda = False
+                if event.key == pygame.K_SPACE:
+                    bullet=projetil(man.rect.centerx,man.rect.bottom,pew,facing)
+                    bullet.rect.centerx=man.rect.x +10
+                    bullet.rect.bottom=man.rect.y + 40
+                    projeteis.append(bullet)
+                    all_sprites.add(bullet)
+                    bullets.add(bullet)
+            
+            
+            
+            
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_a:
+                    man.speedx = 0
+                if event.key == pygame.K_d:
+                    man.speedx = 0
+    
+   
+            
+
                 
         if count == 100:
             
