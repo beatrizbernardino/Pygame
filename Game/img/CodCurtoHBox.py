@@ -58,6 +58,7 @@ class player(pygame.sprite.Sprite):
         self.rect.x=1
         self.rect.y=510
         self.speedx=0
+        self.speedy=0
         self.pulo = False
         self.vel = 10
         self.jumpCount = 10
@@ -65,6 +66,7 @@ class player(pygame.sprite.Sprite):
         self.esquerda = False
     def update(self):
         self.rect.x += self.speedx
+        self.rect.y+=self.speedy
         if self.rect.right > width:
             self.rect.right = width
         if self.rect.left < 0:
@@ -195,6 +197,7 @@ for i in range (4):
         p1=Platform(width/2,height,900,30,'middle')
         
         all_sprites.add(p1)
+        all_platforms.add(p1)
 
 
 
@@ -247,19 +250,42 @@ try:
     while run:
         clock.tick(27)
         
+        hits = pygame.sprite.groupcollide(playergroup, all_platforms, False, False)
+        for hit in hits:
+          man.rect.bottom = hit.rect.top
+         
+          
+        if len(hits)==0:
+            man.speedy-=-2#-(man.jumpCount ** 2) * 0.5
+        else:
+            man.speedy=0
+        
         hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False)
      
         if hits:
             lives -= 1
             
         if lives == 0:
+            a=False
+            pygame.mouse.get_pressed() 
+            while not a:
+                win.fill(WHITE)
+                myfont=pygame.font.SysFont("Britannic Bold", 60)
+                nlabel=myfont.render("Game over", 1, (255, 150, 0))
+                for event in pygame.event.get():
+                    if event.type==pygame.QUIT:
+                        pygame.quit()
+                        quit()
+                    win.blit(nlabel,(250,300))
+                    pygame.display.flip()
+                    run= False
             
             if run == False:
                 win.blit(game_over, (0,0))
         
-        hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
-        for hit in hits:
-            print("bateu")
+#        hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
+#        for hit in hits:
+#            print("bateu")
             
         hits =pygame.sprite.groupcollide(enemygroup,bullets , True, False ) 
         
