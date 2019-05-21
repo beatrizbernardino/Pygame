@@ -287,6 +287,12 @@ try:
         
         
         
+<<<<<<< HEAD:Game/img/gamecharcomrect.py
+
+        hits = pygame.sprite.groupcollide(all_sprites, playergroup, False, False)
+        for hit in hits:
+            print("bateu")
+=======
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
                 man.y = hit.rect.top - 64
@@ -298,12 +304,17 @@ try:
             neg = -1
             man.y -=- 2#(10 ** 2) * 0.5 * neg
 
+>>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f:Game/img/gamechar2.py
         hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False)
      
         if hits:
             lives -= 1
             
             if lives == 0:
+<<<<<<< HEAD:Game/img/gamecharcomrect.py
+               run= False
+
+=======
                 a=False
                 pygame.mouse.get_pressed() 
                 while not a:
@@ -317,6 +328,7 @@ try:
                         win.blit(nlabel,(250,300))
                         pygame.display.flip()
                         run= False
+>>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f:Game/img/gamechar2.py
     
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
