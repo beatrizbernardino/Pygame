@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Tue May 21 16:48:51 2019
+
+@author: Vitor Bandeira
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Thu May 16 12:01:32 2019
 
 @author: Vitor Bandeira
@@ -31,10 +38,7 @@ char = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
 char  = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
-<<<<<<< HEAD
-=======
 game_over =pygame.image.load("grassMid.png") 
->>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.transform.scale(bg,(900,600))
@@ -112,7 +116,7 @@ class enemy(pygame.sprite.Sprite):
             self.visible = False
 
 class projetil(pygame.sprite.Sprite):
-    def __init__(self,x,y,pew):
+    def __init__(self,x,y,pew,facing):
         pygame.sprite.Sprite.__init__(self)
         self.image=pew
         self.image = pygame.transform.scale(pew, (70, 50))
@@ -122,11 +126,7 @@ class projetil(pygame.sprite.Sprite):
         self.speedx=20 * facing
         self.facing = facing
     def update(self):
-<<<<<<< HEAD
-       # pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
-=======
        
->>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f
         self.rect.centerx += (self.speedx)
         if self.rect.centerx>width or self.rect.centerx<0:
             self.kill()
@@ -224,6 +224,7 @@ projeteis=[]
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
+game_over = True
 
 
         
@@ -243,14 +244,13 @@ while not end_it:
     win.blit(nlabel,(150,300))
     pygame.display.flip()
     
+    
+    
+    
 try:
-<<<<<<< HEAD
-    lives=4
-=======
    
     
     lives=100
->>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f
     while run:
         clock.tick(27)
         
@@ -260,20 +260,9 @@ try:
             lives -= 1
             
         if lives == 0:
-            a= False
-            pygame.mouse.get_pressed()
-            while not a:
-                win.fill((255,255,255))
-                myfont=pygame.font.SysFont("Britannic Bold", 60)
-                nlabel=myfont.render("Game Over", 1, (255,150,0))
-                for event in pygame.event.get():
-                    if event.type==pygame.QUIT:
-                        pygame.quit()
-                        quit()
-                    win.blit(nlabel,(300,300))
-                    pygame.display.flip()
-                    run =False
-               
+            
+            if run == False:
+                win.blit(game_over, (0,0))
         
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
@@ -285,19 +274,6 @@ try:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-<<<<<<< HEAD
-                
-        keys = pygame.key.get_pressed()
-        
-        if keys[pygame.K_SPACE]:
-           
-            bullet=projetil(man.rect.centerx,man.rect.bottom,pew)
-            bullet.rect.centerx=man.rect.x
-            bullet.rect.bottom=man.rect.y + 40
-            projeteis.append(bullet)
-            all_sprites.add(bullet)
-            bullets.add(bullet)
-=======
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
@@ -338,7 +314,6 @@ try:
                     all_sprites.add(bullet)
                     bullets.add(bullet)
             
->>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f
             
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
