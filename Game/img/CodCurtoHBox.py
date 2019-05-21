@@ -20,13 +20,17 @@ pygame.display.set_caption("Projeto Final")
 walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 bg = pygame.image.load('bg.jpg')
-char = pygame.image.load('standing.png')
+char  = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
+game_over =pygame.image.load("grassMid.png") 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.transform.scale(bg,(900,600))
 clock = pygame.time.Clock()
 
-player_img = pygame.image.load('R8E.png')
+
+
+
+player_img = pygame.image.load('R8E.png') 
 all_sprites=pygame.sprite.Group()
 playergroup = pygame.sprite.Group()
 enemygroup = pygame.sprite.Group()
@@ -45,6 +49,8 @@ class player(pygame.sprite.Sprite):
         self.rect.y=510
         self.speedx=0
         self.pulo = False
+#        self.right= False
+#        self.left= False
         self.vel = 5
         self.jumpCount = 10
     def update(self):
@@ -93,7 +99,7 @@ class enemy(pygame.sprite.Sprite):
             self.visible = False
 
 class projetil(pygame.sprite.Sprite):
-    def __init__(self,x,y,pew):
+    def __init__(self,x,y,pew,facing):
         pygame.sprite.Sprite.__init__(self)
         self.image=pew
         self.image = pygame.transform.scale(pew, (40, 30))
@@ -103,11 +109,11 @@ class projetil(pygame.sprite.Sprite):
         self.rect.centerx=x
         self.speedx=20
         #self.radius = radius
-        #self.facing = facing
+#        self.facing = facing
 
     def update(self):
        # pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
-        self.rect.centerx+=self.speedx
+        self.rect.centerx += (self.speedx)*self.facing
         if self.rect.centerx>width or self.rect.centerx<0:
             self.kill()
             
@@ -182,6 +188,10 @@ for i in range (4):
         p1=Platform(width/2,height,900,30,'middle')
         
         all_sprites.add(p1)
+
+
+
+
             
 def RestaurarJanela():
     all_sprites.update()
@@ -192,18 +202,41 @@ def RestaurarJanela():
     pygame.display.update()
 
 
-inimg= enemy(1,510)    
+#inimg= enemy(1,510)    
 man=player(1,510,64,64)
 playergroup.add(man)
 all_sprites.add(man)
-all_sprites.add(inimg)
+#all_sprites.add(inimg)
 projeteis=[]
 #score=0
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
+game_over = True
 
+
+        
+
+end_it=False
+
+while not end_it:
+    win.fill((255,255,255))
+    myfont=pygame.font.SysFont("Britannic Bold", 60)
+    nlabel=myfont.render("Bem Vindo, Clique para começar", 1, (255,150,0))
+    for event in pygame.event.get():
+        if event.type==pygame.MOUSEBUTTONDOWN:
+            end_it=True
+        if event.type==pygame.QUIT:
+            pygame.quit()
+            quit()
+    win.blit(nlabel,(150,300))
+    pygame.display.flip()
+    
+    
+    
+    
 try:
+   
     
     lives=4
     while run:
@@ -214,8 +247,10 @@ try:
         if hits:
             lives -= 1
             
-            if lives == 0:
-               run= False
+        if lives == 0:
+            
+            if run == False:
+                win.blit(game_over, (0,0))
         
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
@@ -227,10 +262,11 @@ try:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-     
+                
         keys = pygame.key.get_pressed()
         
         if keys[pygame.K_SPACE]:
+           
             bullet=projetil(man.rect.centerx,man.rect.bottom,pew)
             bullet.rect.centerx=man.rect.x
             bullet.rect.bottom=man.rect.y + 40
