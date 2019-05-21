@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Tue May 21 16:48:51 2019
+
+@author: Vitor Bandeira
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Thu May 16 12:01:32 2019
 
 @author: Vitor Bandeira

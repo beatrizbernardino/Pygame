@@ -20,6 +20,7 @@ clock = pygame.time.Clock()
 player_img = pygame.image.load('R8E.png')
 all_sprites=pygame.sprite.Group()
 playergroup = pygame.sprite.Group()
+all_plataform = pygame.sprite.Group()
 enemygroup = pygame.sprite.Group()
 img_dir=path.join(path.dirname(__file__))
 
@@ -229,7 +230,7 @@ def RestaurarJanela():
     man.update(win)
     all_sprites.update()
     inimg.update(win)
-    text=font.render("Score: " + str(score), 1, (255,215,0))
+    text=font.render("lives: " + str(lives), 1, (255,215,0))
     win.blit(text,(750,10))
     for proj in projeteis:
         proj.update(win)
@@ -241,7 +242,7 @@ inimg= inimigo(1,510,64,64,800)
 man=player(1,510,64,64)
 playergroup.add(man)
 projeteis=[]
-score=0
+      
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
@@ -251,6 +252,14 @@ try:
     
     while run:
         clock.tick(27)
+#        hits = pygame.sprite.groupcollide(all_plataform, playergroup, False, False)
+#        if hits:
+#           man.y = hits[0].rect.top
+#           man.vel.y=0
+#           print("bateu")
+        
+        
+        
         
 <<<<<<< HEAD
         hits = pygame.sprite.groupcollide(all_sprites, playergroup, False, False)
@@ -323,10 +332,14 @@ try:
                 man.pulo = False
                 
 <<<<<<< HEAD
+        if count == 300:
+=======
+<<<<<<< HEAD
         if count == 100:
 =======
         if count == 30:
 >>>>>>> ab0ab4d80c584ad8914609e9068878ef968df848
+>>>>>>> d95772a49fa4fc389f4fc340961dea225de3edeb
             
             en= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
             enemygroup.add(en)
