@@ -261,11 +261,10 @@ try:
         
         
         
-<<<<<<< HEAD
+
         hits = pygame.sprite.groupcollide(all_sprites, playergroup, False, False)
         for hit in hits:
             print("bateu")
-=======
         hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False)
      
         if hits:
@@ -273,7 +272,7 @@ try:
             
             if lives == 0:
                run= False
->>>>>>> ab0ab4d80c584ad8914609e9068878ef968df848
+
     
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -282,7 +281,6 @@ try:
             if proj.y - proj.radius < inimg.hitbox[1] + inimg.hitbox[3] and proj.y + proj.radius > inimg.hitbox[1]:     #EXPLICAÇÃO
                 if proj.x + proj.radius > inimg.hitbox[0] and proj.x - proj.radius < inimg.hitbox[0] + inimg.hitbox[2]: #EXPLICAÇÃO
                     inimg.hit()
-                    score += 1
                     projeteis.pop(projeteis.index(proj))
             
             
@@ -331,16 +329,9 @@ try:
                 man.jumpCount = 10
                 man.pulo = False
                 
-<<<<<<< HEAD
-        if count == 300:
-=======
-<<<<<<< HEAD
-        if count == 100:
-=======
+
+
         if count == 30:
->>>>>>> ab0ab4d80c584ad8914609e9068878ef968df848
->>>>>>> d95772a49fa4fc389f4fc340961dea225de3edeb
-            
             en= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
             enemygroup.add(en)
             all_sprites.add(en)

@@ -22,7 +22,7 @@ walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.ima
 bg = pygame.image.load('bg.jpg')
 char  = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
-game_over =pygame.image.load("grassMid.png") 
+
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.transform.scale(bg,(900,600))
 clock = pygame.time.Clock()
@@ -99,7 +99,7 @@ class enemy(pygame.sprite.Sprite):
             self.visible = False
 
 class projetil(pygame.sprite.Sprite):
-    def __init__(self,x,y,pew,facing):
+    def __init__(self,x,y,pew):
         pygame.sprite.Sprite.__init__(self)
         self.image=pew
         self.image = pygame.transform.scale(pew, (40, 30))
@@ -113,7 +113,7 @@ class projetil(pygame.sprite.Sprite):
 
     def update(self):
        # pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
-        self.rect.centerx += (self.speedx)*self.facing
+        self.rect.centerx += (self.speedx)
         if self.rect.centerx>width or self.rect.centerx<0:
             self.kill()
             
@@ -212,7 +212,6 @@ projeteis=[]
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
-game_over = True
 
 
         
@@ -232,12 +231,7 @@ while not end_it:
     win.blit(nlabel,(150,300))
     pygame.display.flip()
     
-    
-    
-    
 try:
-   
-    
     lives=4
     while run:
         clock.tick(27)
@@ -248,9 +242,20 @@ try:
             lives -= 1
             
         if lives == 0:
-            
-            if run == False:
-                win.blit(game_over, (0,0))
+            a= False
+            pygame.mouse.get_pressed()
+            while not a:
+                win.fill((255,255,255))
+                myfont=pygame.font.SysFont("Britannic Bold", 60)
+                nlabel=myfont.render("Game Over", 1, (255,150,0))
+                for event in pygame.event.get():
+                    if event.type==pygame.QUIT:
+                        pygame.quit()
+                        quit()
+                    win.blit(nlabel,(300,300))
+                    pygame.display.flip()
+                    run =False
+               
         
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
@@ -271,9 +276,6 @@ try:
             bullet.rect.centerx=man.rect.x
             bullet.rect.bottom=man.rect.y + 40
             projeteis.append(bullet)
-            
-            
-            
             all_sprites.add(bullet)
             bullets.add(bullet)
             
