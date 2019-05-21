@@ -23,6 +23,7 @@ all_sprites=pygame.sprite.Group()
 all_platforms=pygame.sprite.Group()
 projeteiss=pygame.sprite.Group()
 playergroup = pygame.sprite.Group()
+all_plataform = pygame.sprite.Group()
 enemygroup = pygame.sprite.Group()
 img_dir=path.join(path.dirname(__file__))
 
@@ -241,7 +242,7 @@ def RestaurarJanela():
     all_sprites.update()
     inimg.update(win)
     all_platforms.update()
-    text=font.render("Score: " + str(score), 1, (255,215,0))
+    text=font.render("lives: " + str(lives), 1, (255,215,0))
     win.blit(text,(750,10))
     for proj in projeteis:
         proj.update(win)
@@ -253,7 +254,6 @@ man=player(1,510,64,64)
 playergroup.add(man)
 projeteis=[]
 
-score=0
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
@@ -278,6 +278,14 @@ try:
     
     while run:
         clock.tick(27)
+#        hits = pygame.sprite.groupcollide(all_plataform, playergroup, False, False)
+#        if hits:
+#           man.y = hits[0].rect.top
+#           man.vel.y=0
+#           print("bateu")
+        
+        
+        
         
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
@@ -317,7 +325,6 @@ try:
             if proj.y - proj.radius < inimg.hitbox[1] + inimg.hitbox[3] and proj.y + proj.radius > inimg.hitbox[1]:     #EXPLICAÇÃO
                 if proj.x + proj.radius > inimg.hitbox[0] and proj.x - proj.radius < inimg.hitbox[0] + inimg.hitbox[2]: #EXPLICAÇÃO
                     inimg.hit()
-                    score += 1
                     projeteis.pop(projeteis.index(proj))
             
             
@@ -365,7 +372,9 @@ try:
                 man.jumpCount = 10
                 man.pulo = False
                 
-        if count == 100:
+
+
+        if count == 30:
             en= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
             enemygroup.add(en)
             all_sprites.add(en)
