@@ -55,8 +55,8 @@ class player(pygame.sprite.Sprite):
         self.image= pygame.transform.scale(char,(64,64))
         self.image.set_colorkey((0,0,0))
         self.rect=self.image.get_rect()
-        self.rect.x=1
-        self.rect.y=510
+        self.rect.x=x
+        self.rect.y=y
         self.speedx=0
         self.speedy=0
         self.pulo = False
@@ -64,9 +64,17 @@ class player(pygame.sprite.Sprite):
         self.jumpCount = 10
         self.direita = False
         self.esquerda = False
+        self.parado = False
     def update(self):
+        
         self.rect.x += self.speedx
         self.rect.y+=self.speedy
+        if not self.parado:
+            self.speedy += 1 # Gravidade
+            
+        if self.speedx != 0:
+            man.parado = False
+
         if self.rect.right > width:
             self.rect.right = width
         if self.rect.left < 0:
@@ -146,9 +154,12 @@ class Platform(pygame.sprite.Sprite):
         self.image=pygame.transform.scale(player_img,(w,h))
         
         self.rect=self.image.get_rect()
+        self.rect.height = 5
+        #
         
         self.rect.centerx=x
         self.rect.bottom=y
+        print(self.rect)
         self.image.set_colorkey((0,0,0))
    
 
@@ -212,7 +223,7 @@ def RestaurarJanela():
 
 
    
-man=player(1,510,64,64)
+man=player(1,450,64,64)
 playergroup.add(man)
 all_sprites.add(man)
 projeteis=[]
@@ -241,20 +252,28 @@ while not end_it:
 try:
 
     
-    lives=100
+    lives=3
     while run:
         clock.tick(27)
         
-        hits = pygame.sprite.groupcollide(playergroup, all_platforms, False, False)
+        hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
-          man.rect.bottom = hit.rect.top
-         
-          
-        if len(hits)==0:
-            man.speedy-=-2#-(man.jumpCount ** 2) * 0.5
-        else:
-            man.speedy=0
-        
+            if man.speedy > 0:
+                man.rect.bottom = hit.rect.top
+                man.speedy = 0
+                man.pulo = False
+                man.parado = True
+            elif man.speedy < 0:
+                man.rect.top = hit.rect.bottom
+                man.speedy = 0
+                man.pulo = False
+                #man.parado = True
+
+#        if len(hits)==0:
+#            man.speedy-=-2#-(man.jumpCount ** 2) * 0.5
+#        else:
+#            man.speedy=0
+
         hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False)
      
         if hits:
@@ -298,17 +317,19 @@ try:
             if not(man.pulo):
                 if keys[pygame.K_w]:
                     man.pulo = True
+                    man.speedy = -20
+                    man.parado = False
     
-            else:
-                if man.jumpCount >= -10:
-                    neg = 1
-                    if man.jumpCount < 0:
-                        neg = -1
-                    man.rect.y -= (man.jumpCount ** 2) * 0.5 * neg
-                    man.jumpCount -= 1
-                else:
-                    man.jumpCount = 10
-                    man.pulo = False
+#            else:
+#                if man.jumpCount >= -10:
+#                    neg = 1
+#                    if man.jumpCount < 0:
+#                        neg = -1
+#                    #man.rect.y -= (man.jumpCount ** 2) * 0.5 * neg
+#                    man.jumpCount -= 1
+#                else:
+#                    man.jumpCount = 10
+#                    man.pulo = False
                     
                     
             if event.type == pygame.KEYDOWN:
@@ -316,10 +337,12 @@ try:
                     man.speedx -= man.vel
                     man.direita = False
                     man.esquerda= True
+                    man.parado = False
                 if event.key == pygame.K_d:
                     man.speedx += man.vel
                     man.direita = True
                     man.esquerda = False
+                    man.parado = False
                 if event.key == pygame.K_SPACE:
                     bullet=projetil(man.rect.centerx,man.rect.bottom,pew,facing)
                     bullet.rect.centerx=man.rect.x +10
