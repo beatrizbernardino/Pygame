@@ -371,7 +371,7 @@ try:
 
 
                 
-        if count == 100:
+        if count == 50:
             
             en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
             enemygroup.add(en)
