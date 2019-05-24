@@ -267,7 +267,7 @@ try:
     lives=10
     while run:
       
-        clock.tick(27)
+        clock.tick(30)
         
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
@@ -299,8 +299,9 @@ try:
             while not a:
                # win.fill((255,255,255))
                 myfont=pygame.font.SysFont("Britannic Bold", 60)
+                vitorlindo=pygame.font.SysFont("Britannic Bold", 100)
                 b=myfont.render("Score:"+ str(score),2, (255,200,0) )
-                nlabel=myfont.render("Game Over", 1, (255,150,0))
+                nlabel=vitorlindo.render("Game Over", 1, (255,0,0))
                 sco=myfont.render("HighScore:"+ str(high_score),2, (255,200,0) )
                 
                 for event in pygame.event.get():
@@ -308,9 +309,9 @@ try:
                         pygame.quit()
                         quit()
                     win.blit(tela,(0,0))
-                    win.blit(nlabel,(width/2,height-500))
-                    win.blit(b,(150,height-300))
-                    win.blit(sco,(150,height-250))
+                    win.blit(nlabel,(width/2,height-550))
+                    win.blit(b,(150,height-100))
+                    win.blit(sco,(150,height-150))
                     pygame.display.flip()
                     run =False
                
@@ -367,8 +368,14 @@ try:
 
 
                 
+<<<<<<< HEAD
         if count == 100:
             en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
+=======
+        if count == 50:
+            
+            en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
+>>>>>>> 2bd38d33095ed6f347f1a75f772a1f9d13a1a05c
             enemygroup.add(en)
             all_sprites.add(en)
             count=0
