@@ -129,10 +129,7 @@ class projetil(pygame.sprite.Sprite):
         self.speedx=20 * facing
         self.facing = facing
     def update(self):
-<<<<<<< HEAD
 
-=======
->>>>>>> 0f5b4c7793e4576cd74b24a3b2eaa145bd9560ee
         self.rect.centerx += (self.speedx)
         if self.rect.centerx>width or self.rect.centerx<0:
             self.kill()
@@ -255,13 +252,10 @@ while not end_it:
     
 try:
 
-<<<<<<< HEAD
-    lives=4
 
-=======
     
     lives=3
->>>>>>> 0f5b4c7793e4576cd74b24a3b2eaa145bd9560ee
+
     while run:
         clock.tick(27)
         
@@ -316,12 +310,6 @@ try:
             if event.type == pygame.QUIT:
                 run = False
 
-<<<<<<< HEAD
-                
-
-=======
->>>>>>> 0f5b4c7793e4576cd74b24a3b2eaa145bd9560ee
-
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
                 if man.esquerda:
@@ -366,10 +354,6 @@ try:
                     bullets.add(bullet)
             
 
-<<<<<<< HEAD
-=======
-             
->>>>>>> 0f5b4c7793e4576cd74b24a3b2eaa145bd9560ee
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     man.speedx = 0

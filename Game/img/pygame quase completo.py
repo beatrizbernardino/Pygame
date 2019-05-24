@@ -25,6 +25,7 @@ char = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
 char  = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
+coracao = pygame.image.load('coracao.png')
 snd_dir = path.join(path.dirname(__file__))
 som=pygame.mixer.Sound(path.join(snd_dir, 'pew.wav'))
 boom=pygame.mixer.Sound(path.join(snd_dir, 'expl6.wav'))
@@ -210,15 +211,23 @@ for i in range (4):
 
 
             
-def RestaurarJanela():
+def RestaurarJanela(lives, score):
     all_sprites.update()
     win.blit(bg, (0,0))
     all_sprites.draw(win)
-    text=font.render("Lives: " + str(lives), 1, (255,215,0))
+#    text=font.render("Lives: " + str(lives), 1, (255,215,0))
     placar=font.render("Score: " + str(score), 1, (255,215,0))
-    win.blit(text,(750,10))
+#    win.blit(text,(750,10))
     win.blit(placar,(750,50))
+    text_surface = myfont.render(chr(9829) * lives, True, RED)
+    text_rect = text_surface.get_rect()
+    text_rect.center = (width/2, height/2)
+    win.blit(text_surface, text_rect)
+    
+    
     pygame.display.update()
+    
+
 
 
    
@@ -230,7 +239,18 @@ font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
 
-        
+  
+
+
+    
+    
+
+
+
+
+
+
+      
 high_score_file = open("high_score_file.txt", "r")
 high_score = int(high_score_file.read())
 high_score_file.close()      
@@ -249,6 +269,10 @@ while not end_it:
             quit()
     win.blit(nlabel,(150,300))
     pygame.display.flip()
+
+
+
+
     
 try:
 
@@ -362,9 +386,15 @@ try:
             count=0
         count+=1
                 
-        RestaurarJanela()
+        RestaurarJanela(lives, score)
         for en in enemygroup:
             en.sethero(man.rect.x, man.rect.y)
+        
+        
+            
+        
+               
+    
 finally:
     pygame.quit()
     quit()
