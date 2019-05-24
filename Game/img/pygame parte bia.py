@@ -29,7 +29,8 @@ pew = pygame.image.load("tiro.png").convert_alpha()
 snd_dir = path.join(path.dirname(__file__))
 som=pygame.mixer.Sound(path.join(snd_dir, 'tiro.wav'))
 boom=pygame.mixer.Sound(path.join(snd_dir, 'expl6.wav'))
-
+bgsong=pygame.mixer.Sound(path.join(snd_dir, 'bg.wav'))
+inicial=pygame.image.load('bbb.png')
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.transform.scale(bg,(900,600))
@@ -251,14 +252,14 @@ while not end_it:
         if event.type==pygame.QUIT:
             pygame.quit()
             quit()
-    win.blit(l, (0,0))
+    win.blit(inicial, (0,0))
     win.blit(nlabel,(150,300))
     
     
     pygame.display.flip()
     
 try:
-
+    bgsong.play()
     score=0
     lives=3
     while run:
