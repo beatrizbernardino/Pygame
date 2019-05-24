@@ -21,7 +21,6 @@ pygame.display.set_caption("Projeto Final")
 walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 bg = pygame.image.load('snow.png')
-g = pygame.image.load('image.png').convert()
 pew = pygame.image.load("tiro.png").convert_alpha()
 char  = pygame.image.load('papain.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
@@ -30,12 +29,12 @@ som=pygame.mixer.Sound(path.join(snd_dir, 'tiro.wav'))
 boom=pygame.mixer.Sound(path.join(snd_dir, 'expl6.wav'))
 bgsong=pygame.mixer.Sound(path.join(snd_dir, 'bg.wav'))
 inicial=pygame.image.load('bbb.png')
+final=pygame.image.load('final.jpg').convert()
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 q=pygame.transform.scale(bg,(900,600))
-l=pygame.transform.scale(g,(900,600))
 clock = pygame.time.Clock()
-
+tela=pygame.transform.scale(final,(900,600))
 
 
 
@@ -267,11 +266,12 @@ while not end_it:
     pygame.display.flip()
     
 try:
-    bgsong.play()
+    bgsong.play(loops=-1)
     score=0
-    lives=3
+    lives=1
     while run:
-        clock.tick(27)
+      
+        clock.tick(30)
         
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
@@ -301,20 +301,21 @@ try:
             a= False
             pygame.mouse.get_pressed()
             while not a:
-                win.fill((255,255,255))
+               # win.fill((255,255,255))
                 myfont=pygame.font.SysFont("Britannic Bold", 60)
+                vitorlindo=pygame.font.SysFont("Britannic Bold", 100)
                 b=myfont.render("Score:"+ str(score),2, (255,200,0) )
-                nlabel=myfont.render("Game Over", 1, (255,150,0))
+                nlabel=vitorlindo.render("Game Over", 1, (255,0,0))
                 sco=myfont.render("HighScore:"+ str(high_score),2, (255,200,0) )
                 
                 for event in pygame.event.get():
                     if event.type==pygame.QUIT:
                         pygame.quit()
                         quit()
-                    win.blit(l, (0,0))
-                    win.blit(nlabel,(300,200))
-                    win.blit(b,(300,250))
-                    win.blit(sco,(300,300))
+                    win.blit(tela,(0,0))
+                    win.blit(nlabel,(width/2,height-550))
+                    win.blit(b,(150,height-100))
+                    win.blit(sco,(150,height-150))
                     pygame.display.flip()
                     run =False
                
