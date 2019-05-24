@@ -28,7 +28,7 @@ snd_dir = path.join(path.dirname(__file__))
 som=pygame.mixer.Sound(path.join(snd_dir, 'tiro.wav'))
 boom=pygame.mixer.Sound(path.join(snd_dir, 'expl6.wav'))
 bgsong=pygame.mixer.Sound(path.join(snd_dir, 'bg.wav'))
-inicial=pygame.image.load('bbb.png')
+inicial=pygame.image.load('bbg.png')
 final=pygame.image.load('final.jpg').convert()
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -250,9 +250,6 @@ for i in range(numeroparticulas):
 end_it=False
 
 while not end_it:
-    win.fill((255,255,255))
-    myfont=pygame.font.SysFont("Britannic Bold", 60)
-    nlabel=myfont.render("Bem Vindo, Clique para começar", 1, (255,150,0))
     for event in pygame.event.get():
         if event.type==pygame.MOUSEBUTTONDOWN:
             end_it=True
@@ -260,8 +257,7 @@ while not end_it:
             pygame.quit()
             quit()
     win.blit(inicial, (0,0))
-    win.blit(nlabel,(150,300))
-    
+   
     
     pygame.display.flip()
     
