@@ -55,16 +55,26 @@ class player(pygame.sprite.Sprite):
         self.image= pygame.transform.scale(char,(64,64))
         self.image.set_colorkey((0,0,0))
         self.rect=self.image.get_rect()
-        self.rect.x=1
-        self.rect.y=510
+        self.rect.x=x
+        self.rect.y=y
         self.speedx=0
+        self.speedy=0
         self.pulo = False
         self.vel = 10
         self.jumpCount = 10
         self.direita = False
         self.esquerda = False
+        self.parado = False
     def update(self):
+        
         self.rect.x += self.speedx
+        self.rect.y+=self.speedy
+        if not self.parado:
+            self.speedy += 1 # Gravidade
+            
+        if self.speedx != 0:
+            man.parado = False
+
         if self.rect.right > width:
             self.rect.right = width
         if self.rect.left < 0:
@@ -109,7 +119,7 @@ class enemy(pygame.sprite.Sprite):
             self.visible = False
 
 class projetil(pygame.sprite.Sprite):
-    def __init__(self,x,y,pew):
+    def __init__(self,x,y,pew,facing):
         pygame.sprite.Sprite.__init__(self)
         self.image=pew
         self.image = pygame.transform.scale(pew, (70, 50))
@@ -119,7 +129,10 @@ class projetil(pygame.sprite.Sprite):
         self.speedx=20 * facing
         self.facing = facing
     def update(self):
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0f5b4c7793e4576cd74b24a3b2eaa145bd9560ee
         self.rect.centerx += (self.speedx)
         if self.rect.centerx>width or self.rect.centerx<0:
             self.kill()
@@ -145,9 +158,12 @@ class Platform(pygame.sprite.Sprite):
         self.image=pygame.transform.scale(player_img,(w,h))
         
         self.rect=self.image.get_rect()
+        self.rect.height = 5
+        #
         
         self.rect.centerx=x
         self.rect.bottom=y
+        print(self.rect)
         self.image.set_colorkey((0,0,0))
    
 
@@ -195,6 +211,7 @@ for i in range (4):
         p1=Platform(width/2,height,900,30,'middle')
         
         all_sprites.add(p1)
+        all_platforms.add(p1)
 
 
 
@@ -210,7 +227,7 @@ def RestaurarJanela():
 
 
    
-man=player(1,510,64,64)
+man=player(1,450,64,64)
 playergroup.add(man)
 all_sprites.add(man)
 projeteis=[]
@@ -238,11 +255,34 @@ while not end_it:
     
 try:
 
+<<<<<<< HEAD
     lives=4
 
+=======
+    
+    lives=3
+>>>>>>> 0f5b4c7793e4576cd74b24a3b2eaa145bd9560ee
     while run:
         clock.tick(27)
         
+        hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
+        for hit in hits:
+            if man.speedy > 0:
+                man.rect.bottom = hit.rect.top
+                man.speedy = 0
+                man.pulo = False
+                man.parado = True
+            elif man.speedy < 0:
+                man.rect.top = hit.rect.bottom
+                man.speedy = 0
+                man.pulo = False
+                #man.parado = True
+
+#        if len(hits)==0:
+#            man.speedy-=-2#-(man.jumpCount ** 2) * 0.5
+#        else:
+#            man.speedy=0
+
         hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False)
      
         if hits:
@@ -263,10 +303,11 @@ try:
                     pygame.display.flip()
                     run =False
                
+
         
-        hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
-        for hit in hits:
-            print("bateu")
+#        hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
+#        for hit in hits:
+#            print("bateu")
             
         hits =pygame.sprite.groupcollide(enemygroup,bullets , True, False ) 
         
@@ -275,8 +316,11 @@ try:
             if event.type == pygame.QUIT:
                 run = False
 
+<<<<<<< HEAD
                 
 
+=======
+>>>>>>> 0f5b4c7793e4576cd74b24a3b2eaa145bd9560ee
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
@@ -287,17 +331,19 @@ try:
             if not(man.pulo):
                 if keys[pygame.K_w]:
                     man.pulo = True
+                    man.speedy = -20
+                    man.parado = False
     
-            else:
-                if man.jumpCount >= -10:
-                    neg = 1
-                    if man.jumpCount < 0:
-                        neg = -1
-                    man.rect.y -= (man.jumpCount ** 2) * 0.5 * neg
-                    man.jumpCount -= 1
-                else:
-                    man.jumpCount = 10
-                    man.pulo = False
+#            else:
+#                if man.jumpCount >= -10:
+#                    neg = 1
+#                    if man.jumpCount < 0:
+#                        neg = -1
+#                    #man.rect.y -= (man.jumpCount ** 2) * 0.5 * neg
+#                    man.jumpCount -= 1
+#                else:
+#                    man.jumpCount = 10
+#                    man.pulo = False
                     
                     
             if event.type == pygame.KEYDOWN:
@@ -305,10 +351,12 @@ try:
                     man.speedx -= man.vel
                     man.direita = False
                     man.esquerda= True
+                    man.parado = False
                 if event.key == pygame.K_d:
                     man.speedx += man.vel
                     man.direita = True
                     man.esquerda = False
+                    man.parado = False
                 if event.key == pygame.K_SPACE:
                     bullet=projetil(man.rect.centerx,man.rect.bottom,pew,facing)
                     bullet.rect.centerx=man.rect.x +10
@@ -318,6 +366,10 @@ try:
                     bullets.add(bullet)
             
 
+<<<<<<< HEAD
+=======
+             
+>>>>>>> 0f5b4c7793e4576cd74b24a3b2eaa145bd9560ee
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     man.speedx = 0
