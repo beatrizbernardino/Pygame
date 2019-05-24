@@ -31,10 +31,7 @@ char = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
 char  = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
-<<<<<<< HEAD
-=======
-game_over =pygame.image.load("grassMid.png") 
->>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f
+
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.transform.scale(bg,(900,600))
@@ -122,11 +119,7 @@ class projetil(pygame.sprite.Sprite):
         self.speedx=20 * facing
         self.facing = facing
     def update(self):
-<<<<<<< HEAD
-       # pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
-=======
-       
->>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f
+
         self.rect.centerx += (self.speedx)
         if self.rect.centerx>width or self.rect.centerx<0:
             self.kill()
@@ -244,13 +237,9 @@ while not end_it:
     pygame.display.flip()
     
 try:
-<<<<<<< HEAD
+
     lives=4
-=======
-   
-    
-    lives=100
->>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f
+
     while run:
         clock.tick(27)
         
@@ -285,19 +274,9 @@ try:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-<<<<<<< HEAD
+
                 
-        keys = pygame.key.get_pressed()
-        
-        if keys[pygame.K_SPACE]:
-           
-            bullet=projetil(man.rect.centerx,man.rect.bottom,pew)
-            bullet.rect.centerx=man.rect.x
-            bullet.rect.bottom=man.rect.y + 40
-            projeteis.append(bullet)
-            all_sprites.add(bullet)
-            bullets.add(bullet)
-=======
+
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
@@ -338,8 +317,7 @@ try:
                     all_sprites.add(bullet)
                     bullets.add(bullet)
             
->>>>>>> 2987fffb49dbe239af1c91a19c321458504d0f6f
-            
+
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     man.speedx = 0
