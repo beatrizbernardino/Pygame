@@ -26,15 +26,16 @@ pygame.display.set_caption("Projeto Final")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
-bg = pygame.image.load('bg.jpg')
-char = pygame.image.load('standing.png')
+bg = pygame.image.load('snow.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
-char  = pygame.image.load('standing.png')
+char  = pygame.image.load('papain.png').convert_alpha()
 pew = pygame.image.load("tiro.png").convert_alpha()
-
+snd_dir = path.join(path.dirname(__file__))
+som=pygame.mixer.Sound(path.join(snd_dir, 'pew.wav'))
+boom=pygame.mixer.Sound(path.join(snd_dir, 'expl6.wav'))
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-pygame.transform.scale(bg,(900,600))
+q=pygame.transform.scale(bg,(900,600))
 clock = pygame.time.Clock()
 
 
@@ -52,8 +53,8 @@ class player(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height):
         pygame.sprite.Sprite.__init__(self)
         self.image= char
-        self.image= pygame.transform.scale(char,(64,64))
-        self.image.set_colorkey((0,0,0))
+        self.image= pygame.transform.scale(char,(48,64))
+        self.image.set_colorkey(WHITE)
         self.rect=self.image.get_rect()
         self.rect.x=x
         self.rect.y=y
@@ -144,11 +145,11 @@ class Platform(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         filename = ''
         if tipo == 'left':
-            filename = 'grassCliffLeftAlt.png'
+            filename = 'snow_76.png'
         elif tipo == 'right':
-            filename = 'grassCliffRightAlt.png'
+            filename = 'snow_77.png'
         elif tipo== "middle":
-           filename='grassMid.png'
+           filename='snow_54.png'
         player_img=pygame.image.load(path.join(img_dir,filename)).convert()
         self.image=player_img
         
@@ -216,10 +217,12 @@ for i in range (4):
             
 def RestaurarJanela():
     all_sprites.update()
-    win.blit(bg, (0,0))
+    win.blit(q, (0,0))
     all_sprites.draw(win)
     text=font.render("Lives: " + str(lives), 1, (255,215,0))
+    placar=font.render("Score: " + str(score), 1, (255,215,0))
     win.blit(text,(750,10))
+    win.blit(placar,(750,50))
     pygame.display.update()
 
 
@@ -231,8 +234,11 @@ projeteis=[]
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
+score=0
 
-
+high_score_file = open("high_score_file.txt", "r")
+high_score = int(high_score_file.read())
+high_score_file.close()
         
 
 end_it=False
@@ -283,17 +289,29 @@ try:
             lives -= 1
             
         if lives == 0:
+            if score>high_score:
+                high_score_file = open("high_score_file.txt", "w")
+                high_score_file.write(str(score))
+                high_score_file.close()
+                high_score_file = open("high_score_file.txt", "r")
+                high_score = int(high_score_file.read())
+                high_score_file.close()
             a= False
             pygame.mouse.get_pressed()
             while not a:
                 win.fill((255,255,255))
                 myfont=pygame.font.SysFont("Britannic Bold", 60)
                 nlabel=myfont.render("Game Over", 1, (255,150,0))
+                b=myfont.render("Score:"+ str(score),2, (255,200,0) )
+                sco=myfont.render("HighScore:"+ str(high_score),2, (255,200,0) )
                 for event in pygame.event.get():
                     if event.type==pygame.QUIT:
                         pygame.quit()
                         quit()
-                    win.blit(nlabel,(300,300))
+                    win.blit(nlabel,(300,200))
+                    win.blit(b,(300,250))
+                    win.blit(sco,(300,300))
+                    
                     pygame.display.flip()
                     run =False
                
@@ -304,7 +322,9 @@ try:
 #            print("bateu")
             
         hits =pygame.sprite.groupcollide(enemygroup,bullets , True, False ) 
-        
+        if hits:
+             boom.play()
+             score+=1
     
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -385,7 +405,7 @@ try:
                 
         if count == 100:
             
-            en= enemy(random.randrange(0,WIDTH), random.randrange(0,HEIGHT))
+            en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
             enemygroup.add(en)
             all_sprites.add(en)
             count=0

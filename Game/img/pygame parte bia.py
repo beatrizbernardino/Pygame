@@ -20,11 +20,10 @@ pygame.display.set_caption("Projeto Final")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
-bg = pygame.image.load('bg.jpg')
+bg = pygame.image.load('snow.png')
 g = pygame.image.load('image.png').convert()
-char = pygame.image.load('standing.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
-char  = pygame.image.load('standing.png')
+char  = pygame.image.load('papain.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
 snd_dir = path.join(path.dirname(__file__))
 som=pygame.mixer.Sound(path.join(snd_dir, 'tiro.wav'))
@@ -33,14 +32,14 @@ bgsong=pygame.mixer.Sound(path.join(snd_dir, 'bg.wav'))
 inicial=pygame.image.load('bbb.png')
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-pygame.transform.scale(bg,(900,600))
+q=pygame.transform.scale(bg,(900,600))
 l=pygame.transform.scale(g,(900,600))
 clock = pygame.time.Clock()
 
 
 
 
-player_img = pygame.image.load('R8E.png') 
+player_img = pygame.image.load('pegiga.png') 
 all_sprites=pygame.sprite.Group()
 playergroup = pygame.sprite.Group()
 enemygroup = pygame.sprite.Group()
@@ -52,7 +51,7 @@ class player(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height):
         pygame.sprite.Sprite.__init__(self)
         self.image= char
-        self.image= pygame.transform.scale(char,(64,64))
+        self.image= pygame.transform.scale(char,(48,64))
         self.image.set_colorkey((0,0,0))
         self.rect=self.image.get_rect()
         self.rect.x=x
@@ -85,6 +84,7 @@ class enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
         self.image = player_img
+        self.image= pygame.transform.scale(player_img,(80,80))
         self.image.set_colorkey((0,0,0))
         self.rect=self.image.get_rect() 
         self.rect.y = y 
@@ -145,11 +145,11 @@ class Platform(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         filename = ''
         if tipo == 'left':
-            filename = 'grassCliffLeftAlt.png'
+            filename = 'snow_76.png'
         elif tipo == 'right':
-            filename = 'grassCliffRightAlt.png'
+            filename = 'snow_77.png'
         elif tipo== "middle":
-           filename='grassMid.png'
+           filename='snow_54.png'
         player_img=pygame.image.load(path.join(img_dir,filename)).convert()
         self.image=player_img
         
@@ -217,7 +217,7 @@ for i in range (4):
             
 def RestaurarJanela():
     all_sprites.update()
-    win.blit(bg, (0,0))
+    win.blit(q, (0,0))
     all_sprites.draw(win)
     text=font.render("Lives: " + str(lives), 1, (255,215,0))
     placar=font.render("Score: " + str(score), 1, (255,215,0))
@@ -238,7 +238,15 @@ run = True
         
 high_score_file = open("high_score_file.txt", "r")
 high_score = int(high_score_file.read())
-high_score_file.close()      
+high_score_file.close()  
+
+numeroparticulas=100;
+
+neve_list=[]
+for i in range(numeroparticulas):
+    x = random.randrange(0, 900)
+    y = random.randrange(0, 600)
+    neve_list.append([x,y])    
 
 end_it=False
 
@@ -374,6 +382,15 @@ try:
         RestaurarJanela()
         for en in enemygroup:
             en.sethero(man.rect.x, man.rect.y)
+        
+        for point in neve_list:
+            point[1]+=1
+            pygame.draw.circle(win, WHITE, point, 2)
+
+            if(point[1] >= HEIGHT):
+                point[0] = random.randrange(0, 900)
+                point[1] = random.randrange(-10, -5)
+        pygame.display.flip()
 finally:
     pygame.quit()
     quit()
