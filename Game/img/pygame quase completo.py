@@ -4,6 +4,7 @@ import pygame
 from os import path
 pygame.init()
 
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -29,7 +30,7 @@ coracao = pygame.image.load('coracao.png')
 snd_dir = path.join(path.dirname(__file__))
 som=pygame.mixer.Sound(path.join(snd_dir, 'pew.wav'))
 boom=pygame.mixer.Sound(path.join(snd_dir, 'expl6.wav'))
-
+tempo=pygame.time.Clock()
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.transform.scale(bg,(900,600))
@@ -63,6 +64,7 @@ class player(pygame.sprite.Sprite):
         self.direita = False
         self.esquerda = False
         self.parado = False
+        self.invecivel = False 
     def update(self):
         
         self.rect.x += self.speedx
@@ -153,7 +155,7 @@ class Platform(pygame.sprite.Sprite):
         
         self.rect=self.image.get_rect()
         self.rect.height = 5
-        #
+        
         
         self.rect.centerx=x
         self.rect.bottom=y
@@ -219,9 +221,9 @@ def RestaurarJanela(lives, score):
     placar=font.render("Score: " + str(score), 1, (255,215,0))
 #    win.blit(text,(750,10))
     win.blit(placar,(750,50))
-    text_surface = myfont.render(chr(9829) * lives, True, RED)
+    text_surface = myfont.render("\U00002764" * lives, True, WHITE)
     text_rect = text_surface.get_rect()
-    text_rect.center = (width/2, height/2)
+    text_rect.center = (750,10)
     win.blit(text_surface, text_rect)
     
     
@@ -239,18 +241,6 @@ font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
 
-  
-
-
-    
-    
-
-
-
-
-
-
-      
 high_score_file = open("high_score_file.txt", "r")
 high_score = int(high_score_file.read())
 high_score_file.close()      
@@ -295,9 +285,12 @@ try:
          
 
         hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False)
+        
      
         if hits:
-            lives -= 1
+            if not man.invecivel:
+                lives -= 1
+            
 
             
         if lives == 0:
@@ -310,7 +303,7 @@ try:
             pygame.mouse.get_pressed()
             while not a:
                 win.fill((255,255,255))
-                myfont=pygame.font.SysFont("Britannic Bold", 60)
+                myfont=pygame.font.SysFont("Arial", 60)
                 b=myfont.render("Score:"+ str(score),2, (255,200,0) )
                 nlabel=myfont.render("Game Over", 1, (255,150,0))
                 sco=myfont.render("HighScore:"+ str(high_score),2, (255,200,0) )
@@ -347,6 +340,8 @@ try:
                     man.speedy = -20
                     man.parado = False
     
+    
+           
                     
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
@@ -367,16 +362,19 @@ try:
                     projeteis.append(bullet)
                     all_sprites.add(bullet)
                     bullets.add(bullet)
-            
 
+                if event.key == pygame.K_s:
+                    man.invecivel=True
+                    
+                if event.key == pygame.K_e:
+                    man.invecivel=False
              
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     man.speedx = 0
                 if event.key == pygame.K_d:
                     man.speedx = 0
-
-
+            
                 
         if count == 100:
             
