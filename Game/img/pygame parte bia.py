@@ -264,7 +264,7 @@ while not end_it:
 try:
     bgsong.play(loops=-1)
     score=0
-    lives=3
+    lives=10
     while run:
       
         clock.tick(30)
@@ -368,10 +368,11 @@ try:
 
 
                 
+        if count == 100:
+            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
         if count == 50:
             
             en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
-            
             enemygroup.add(en)
             all_sprites.add(en)
             count=0
