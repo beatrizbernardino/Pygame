@@ -218,10 +218,10 @@ def RestaurarJanela():
     all_sprites.update()
     win.blit(q, (0,0))
     all_sprites.draw(win)
-    text=font.render("Lives: " + str(lives), 1, (255,215,0))
-    placar=font.render("Score: " + str(score), 1, (255,215,0))
-    win.blit(text,(750,10))
-    win.blit(placar,(750,50))
+    text=font.render("Lives: " + str(lives), 1, (190,2,20))
+    placar=font.render("Score: " + str(score), 1, (190,2,20))
+    win.blit(text,(730,10))
+    win.blit(placar,(730,50))
     pygame.display.update()
 
 
@@ -264,7 +264,7 @@ while not end_it:
 try:
     bgsong.play(loops=-1)
     score=0
-    lives=10
+    lives=3
     while run:
       
         clock.tick(30)
@@ -300,9 +300,9 @@ try:
                # win.fill((255,255,255))
                 myfont=pygame.font.SysFont("Britannic Bold", 60)
                 vitorlindo=pygame.font.SysFont("Britannic Bold", 100)
-                b=myfont.render("Score:"+ str(score),2, (255,200,0) )
-                nlabel=vitorlindo.render("Game Over", 1, (255,0,0))
-                sco=myfont.render("HighScore:"+ str(high_score),2, (255,200,0) )
+                b=myfont.render("Score:"+ str(score),2, (190,2,20) )
+                nlabel=vitorlindo.render("Game Over", 1, (190,2,20))
+                sco=myfont.render("HighScore:"+ str(high_score),2, (190,2,20) )
                 
                 for event in pygame.event.get():
                     if event.type==pygame.QUIT:
