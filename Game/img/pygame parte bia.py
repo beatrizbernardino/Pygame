@@ -329,10 +329,10 @@ try:
             pygame.mouse.get_pressed()
             while not a:
                 myfont=pygame.font.SysFont("Britannic Bold", 60)
-                gameover=pygame.font.SysFont("Britannic Bold", 100)
-                b=myfont.render("Score:"+ str(score),2, (0,255,0) )
-                nlabel=gameover.render("Game Over", 1, (255,255,0))
-                sco=myfont.render("HighScore:"+ str(high_score),2, (255,200,0) )
+                vitorlindo=pygame.font.SysFont("Britannic Bold", 100)
+                b=myfont.render("Score:"+ str(score),2, (190,2,20) )
+                nlabel=vitorlindo.render("Game Over", 1, (190,2,20))
+                sco=myfont.render("HighScore:"+ str(high_score),2, (190,2,20) )
                 
                 for event in pygame.event.get():
                     if event.type==pygame.QUIT:
