@@ -368,14 +368,11 @@ try:
 
 
                 
-<<<<<<< HEAD
-        if count == 100:
-            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
-=======
+
         if count == 50:
             
             en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
->>>>>>> 2bd38d33095ed6f347f1a75f772a1f9d13a1a05c
+
             enemygroup.add(en)
             all_sprites.add(en)
             count=0

@@ -12,6 +12,8 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
+tempo= 10000
+
 WIDTH=600
 HEIGHT=600
 width=900
@@ -30,7 +32,6 @@ coracao = pygame.image.load('coracao.png')
 snd_dir = path.join(path.dirname(__file__))
 som=pygame.mixer.Sound(path.join(snd_dir, 'pew.wav'))
 boom=pygame.mixer.Sound(path.join(snd_dir, 'expl6.wav'))
-tempo=pygame.time.Clock()
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 pygame.transform.scale(bg,(900,600))
@@ -64,7 +65,8 @@ class player(pygame.sprite.Sprite):
         self.direita = False
         self.esquerda = False
         self.parado = False
-        self.invecivel = False 
+        self.invencivel = 0
+        self.time= pygame.time.get_ticks()
     def update(self):
         
         self.rect.x += self.speedx
@@ -79,7 +81,13 @@ class player(pygame.sprite.Sprite):
             self.rect.right = width
         if self.rect.left < 0:
             self.rect.left = 0
-
+            
+        if self.invencivel > 0:
+            self.invencivel -= 1
+        print(self.invencivel)
+#        if self.invencivel and pygame.time.get_ticks() - self.time>tempo:
+#            self.invencivel=False
+          
 class enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -226,7 +234,6 @@ def RestaurarJanela(lives, score):
     text_rect.center = (750,10)
     win.blit(text_surface, text_rect)
     
-    
     pygame.display.update()
     
 
@@ -269,8 +276,7 @@ try:
     score=0
     lives=3
     while run:
-        clock.tick(27)
-        
+        clock.tick(27) 
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
             if man.speedy > 0:
@@ -288,7 +294,7 @@ try:
         
      
         if hits:
-            if not man.invecivel:
+            if man.invencivel==0:
                 lives -= 1
             
 
@@ -364,11 +370,9 @@ try:
                     bullets.add(bullet)
 
                 if event.key == pygame.K_s:
-                    man.invecivel=True
-                    
-                if event.key == pygame.K_e:
-                    man.invecivel=False
-             
+                    man.invencivel=270
+                   
+
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     man.speedx = 0
