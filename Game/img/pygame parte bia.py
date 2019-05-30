@@ -60,7 +60,7 @@ class player(pygame.sprite.Sprite):
         self.rect=self.image.get_rect()
         self.rect.x=x
         self.rect.y=y
-        self.invencivel=False
+        self.invencivel=0
 #        self.image= char
 #        self.image= pygame.transform.scale(char,(48,64))
 ##        self.image.set_colorkey((0,0,0))
@@ -141,6 +141,8 @@ class player(pygame.sprite.Sprite):
         if self.rect.left < 0:
             self.rect.left = 0
             
+        if self.invencivel > 0:
+            self.invencivel -= 1
 class enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -285,6 +287,8 @@ def RestaurarJanela():
 
     win.blit(placar,(730,70))
 #    win.blit(placar2,(630,90))
+        
+        
     if lives==3:
         win.blit(vitaoradical0,(730,10))
         win.blit(vitaoradical1,(785,10))
@@ -364,7 +368,8 @@ try:
         hits = pygame.sprite.groupcollide(enemygroup, playergroup, True, False, pygame.sprite.collide_circle)
      
         if hits:
-            lives -= 1
+             if man.invencivel==0:
+                 lives -= 1
 
             
         if lives == 0:
@@ -401,6 +406,16 @@ try:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+#                counter -= 1
+#                text = str(counter).rjust(3) if counter > 0 else 'Acabou!'
+#            if event.type == pygame.QUIT: break
+#        else:
+#            screen.fill((255, 255, 255))
+#            screen.blit(font.render(text, True, (190,2,20)), (400,50 ))
+#            pygame.display.flip()
+#            clock.tick(60)
+#            continue
+#        break
 
 
             keys = pygame.key.get_pressed()
@@ -436,7 +451,8 @@ try:
                     projeteis.append(bullet)
                     all_sprites.add(bullet)
                     bullets.add(bullet)
-            
+                if event.key == pygame.K_s:
+                        man.invencivel=270
 
              
             if event.type == pygame.KEYUP:
