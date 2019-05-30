@@ -445,14 +445,14 @@ try:
                 if event.key == pygame.K_d:
                     man.speedx = 0
 
-
-
                 
 #        if count == 10000:
 #            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
         if count == 80:
             
             en= enemy(random.randrange(0,width), random.randrange(0,height))
+
+
 
                     
 #        if count == 100:
