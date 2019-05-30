@@ -18,8 +18,8 @@ height=600
 win = pygame.display.set_mode((900,600))
 pygame.display.set_caption("Projeto Final")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
-walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
+walkRight = [pygame.image.load('papainoel5.png'), pygame.image.load('papainoel6.png'), pygame.image.load('papainoel7.png')]
+walkLeft = [pygame.image.load('papainoel1.png'), pygame.image.load('papainoel3.png'), pygame.image.load('papainoel4.png')]
 bg = pygame.image.load('snow.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
 char  = pygame.image.load('papain.png')
@@ -36,6 +36,11 @@ q=pygame.transform.scale(bg,(900,600))
 clock = pygame.time.Clock()
 tela=pygame.transform.scale(final,(900,600))
 
+vida=pygame.image.load('ra.jpg').convert()
+vida.set_colorkey((255,255,255))
+vitaoradical0=pygame.transform.scale(vida,(55,55))
+vitaoradical1=pygame.transform.scale(vida,(55,55))
+vitaoradical2=pygame.transform.scale(vida,(55,55))
 
 
 player_img = pygame.image.load('pegiga.png') 
@@ -49,7 +54,6 @@ img_dir=path.join(path.dirname(__file__))
 class player(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height):
         pygame.sprite.Sprite.__init__(self)
-        self.image= char
         self.image= pygame.transform.scale(char,(48,64))
         self.image.set_colorkey((0,0,0))
         self.rect=self.image.get_rect()
@@ -64,6 +68,25 @@ class player(pygame.sprite.Sprite):
         self.esquerda = False
         self.parado = False
         self.radius = 32
+        self.sprite_left = 0
+        self.sprite_right = 0
+        
+    def update_sprite(self):
+        if self.direita:
+            self.sprite_right += 1
+            if self.sprite_right == len(walkRight) - 1:
+                self.sprite_right = 0
+            self.image = pygame.transform.scale(walkRight[self.sprite_right],(48,64))
+            
+        if self.esquerda:
+            self.sprite_left += 1
+            if self.sprite_left == len(walkLeft) - 1:
+                self.sprite_left = 0
+            self.image = pygame.transform.scale(walkLeft[self.sprite_left],(48,64))
+            
+        if self.pulo or self.parado and self.speedx==0:
+            self.image = pygame.transform.scale(char,(48,64))
+        
     def update(self):
         
         self.rect.x += self.speedx
@@ -78,7 +101,7 @@ class player(pygame.sprite.Sprite):
             self.rect.right = width
         if self.rect.left < 0:
             self.rect.left = 0
-
+            
 class enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -90,8 +113,8 @@ class enemy(pygame.sprite.Sprite):
         self.rect.x = x
         self.speedx = 5 
         self.speedy = 5
-        self.herox = WIDTH//2
-        self.heroy = HEIGHT//2
+        self.herox = 0
+        self.heroy = 0
         self.visible=True
         self.radius=2#int(self.rect.width * .85 / 2)
         
@@ -113,11 +136,11 @@ class enemy(pygame.sprite.Sprite):
         self.herox = x
         self.heroy = y
    
-    def hit(self):
-        if self.vida>0:
-            self.vida -=1
-        else:
-            self.visible = False
+#    def hit(self):
+#        if self.vida>0:
+#            self.vida -=1
+#        else:
+#            self.visible = False
 
 class projetil(pygame.sprite.Sprite):
     def __init__(self,x,y,pew,facing):
@@ -134,10 +157,6 @@ class projetil(pygame.sprite.Sprite):
         if self.rect.centerx>width or self.rect.centerx<0:
             self.kill()
             
-            
-            
-        
-
 class Platform(pygame.sprite.Sprite):
 
     def __init__(self,x,y,w,h, tipo):
@@ -212,16 +231,21 @@ for i in range (4):
 
 
 
-
             
 def RestaurarJanela():
+    man.update_sprite() 
     all_sprites.update()
     win.blit(q, (0,0))
     all_sprites.draw(win)
-    text=font.render("Lives: " + str(lives), 1, (190,2,20))
+  #  text=font.render("Lives: " + str(), 1, (190,2,20))
     placar=font.render("Score: " + str(score), 1, (190,2,20))
-    win.blit(text,(730,10))
-    win.blit(placar,(730,50))
+#    placar2=font.render("Score: " + str(char), 1, (190,2,20))
+   # win.blit(text,(730,10))
+    win.blit(placar,(730,70))
+#    win.blit(placar2,(630,90))
+    win.blit(vitaoradical0,(730,10))
+    win.blit(vitaoradical1,(785,10))
+    win.blit(vitaoradical2,(840,10))
     pygame.display.update()
 
 
@@ -344,6 +368,7 @@ try:
                     man.direita = False
                     man.esquerda= True
                     man.parado = False
+                    
                 if event.key == pygame.K_d:
                     man.speedx += man.vel
                     man.direita = True
@@ -368,8 +393,8 @@ try:
 
 
                 
-        if count == 100:
-            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
+#        if count == 10000:
+#            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
         if count == 50:
             
             en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
