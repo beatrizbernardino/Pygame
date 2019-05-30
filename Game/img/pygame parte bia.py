@@ -11,20 +11,20 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-WIDTH=600
-HEIGHT=600
+#WIDTH=600
+#HEIGHT=600
 width=900
 height=600
 win = pygame.display.set_mode((900,600))
-pygame.display.set_caption("Projeto Final")
+pygame.display.set_caption("missão no Polo Norte")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
-walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
+#walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
+#walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
+snd_dir = path.join(path.dirname(__file__))
+img_dir=path.join(path.dirname(__file__))
 bg = pygame.image.load('snow.png')
-pew = pygame.image.load("tiro.png").convert_alpha()
 char  = pygame.image.load('papain.png')
 pew = pygame.image.load("tiro.png").convert_alpha()
-snd_dir = path.join(path.dirname(__file__))
 som=pygame.mixer.Sound(path.join(snd_dir, 'tiro.wav'))
 boom=pygame.mixer.Sound(path.join(snd_dir, 'expl6.wav'))
 bgsong=pygame.mixer.Sound(path.join(snd_dir, 'bg.wav'))
@@ -32,9 +32,9 @@ inicial=pygame.image.load('bbg.png')
 final=pygame.image.load('final.jpg').convert()
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-q=pygame.transform.scale(bg,(900,600))
+Bg=pygame.transform.scale(bg,(900,600))
 clock = pygame.time.Clock()
-tela=pygame.transform.scale(final,(900,600))
+telafinal=pygame.transform.scale(final,(900,600))
 
 
 
@@ -44,30 +44,61 @@ playergroup = pygame.sprite.Group()
 enemygroup = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 all_platforms=pygame.sprite.Group()
-img_dir=path.join(path.dirname(__file__))
 
 class player(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height):
         pygame.sprite.Sprite.__init__(self)
-        self.image= char
-        self.image= pygame.transform.scale(char,(48,64))
-        self.image.set_colorkey((0,0,0))
-        self.rect=self.image.get_rect()
-        self.rect.x=x
-        self.rect.y=y
+#        self.image= char
+#        self.image= pygame.transform.scale(char,(48,64))
+##        self.image.set_colorkey((0,0,0))
+#        self.rect=self.image.get_rect()
+#        self.rect.x=x
+#        self.rect.y=y
         self.speedx=0
         self.speedy=0
         self.pulo = False
         self.vel = 10
         self.jumpCount = 10
-        self.direita = False
+        self.direita = True
         self.esquerda = False
         self.parado = False
         self.radius = 32
+        self.invencivel=False
+        self.index=0
+        
+        
+        
+        if self.direita:
+            self.images=[pygame.image.load("an direita 1.png"),pygame.image.load("an direita 2.png"), pygame.image.load("an direita 3.png")]
+            self.image = self.images[self.index]
+            self.image= pygame.transform.scale(self.images[self.index],(48,64))
+            self.rect=self.image.get_rect()
+            self.image.set_colorkey((0,0,0))
+            self.rect.x=x
+            self.rect.y=y
+            
+        if self.esquerda:
+            
+            self.images=[pygame.image.load("an esquerda 1.png"),pygame.image.load("an esquerda2.png"), pygame.image.load("an esquerda 3.png")]
+            self.image = self.images[self.index]
+            self.image= pygame.transform.scale(self.images[self.index],(48,64))
+            self.image.set_colorkey((0,0,0))
+            self.rect =self.image.get_rect()
+            self.rect.x=x
+            self.rect.y=y
+            
     def update(self):
         
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
+        center = self.rect.center
+        self.rect = self.image.get_rect()
+        self.rect.center = center
         self.rect.x += self.speedx
         self.rect.y+=self.speedy
+        
         if not self.parado:
             self.speedy += 1 # Gravidade
             
@@ -90,10 +121,10 @@ class enemy(pygame.sprite.Sprite):
         self.rect.x = x
         self.speedx = 5 
         self.speedy = 5
-        self.herox = WIDTH//2
-        self.heroy = HEIGHT//2
+        self.herox = width//2
+        self.heroy = height//2
         self.visible=True
-        self.radius=2#int(self.rect.width * .85 / 2)
+        self.radius=27
         
     def update(self):
         if self.visible:
@@ -216,12 +247,12 @@ for i in range (4):
             
 def RestaurarJanela():
     all_sprites.update()
-    win.blit(q, (0,0))
+    win.blit(Bg, (0,0))
     all_sprites.draw(win)
-    text=font.render("Lives: " + str(lives), 1, (255,215,0))
-    placar=font.render("Score: " + str(score), 1, (255,215,0))
-    win.blit(text,(750,10))
-    win.blit(placar,(750,50))
+    text=font.render("Lives: " + str(lives), 1, (0,255,0))
+    placar=font.render("Score: " + str(score), 1, (0,255,0))
+    win.blit(text,(730,10))
+    win.blit(placar,(730,50))
     pygame.display.update()
 
 
@@ -264,7 +295,7 @@ while not end_it:
 try:
     bgsong.play(loops=-1)
     score=0
-    lives=10
+    lives=3
     while run:
       
         clock.tick(30)
@@ -297,24 +328,23 @@ try:
             a= False
             pygame.mouse.get_pressed()
             while not a:
-               # win.fill((255,255,255))
                 myfont=pygame.font.SysFont("Britannic Bold", 60)
                 vitorlindo=pygame.font.SysFont("Britannic Bold", 100)
-                b=myfont.render("Score:"+ str(score),2, (255,200,0) )
-                nlabel=vitorlindo.render("Game Over", 1, (255,0,0))
-                sco=myfont.render("HighScore:"+ str(high_score),2, (255,200,0) )
+                b=myfont.render("Score:"+ str(score),2, (190,2,20) )
+                nlabel=vitorlindo.render("Game Over", 1, (190,2,20))
+                sco=myfont.render("HighScore:"+ str(high_score),2, (190,2,20) )
                 
                 for event in pygame.event.get():
                     if event.type==pygame.QUIT:
                         pygame.quit()
                         quit()
-                    win.blit(tela,(0,0))
+                    win.blit(telafinal,(0,0))
                     win.blit(nlabel,(width/2,height-550))
                     win.blit(b,(150,height-100))
                     win.blit(sco,(150,height-150))
                     pygame.display.flip()
                     run =False
-               
+                                   
         hits =pygame.sprite.groupcollide(enemygroup,bullets , True, False, ) 
         if hits:
              boom.play()
@@ -367,12 +397,19 @@ try:
                     man.speedx = 0
 
 
+<<<<<<< HEAD
                 
 
         if count == 50:
             
             en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
 
+=======
+                    
+        if count == 100:
+            en= enemy(random.randrange(0,height), random.randrange(0,height))
+            #random.choice([0,900])
+>>>>>>> 687373a42713ba88e5a29059f8dcceb7b43b2027
             enemygroup.add(en)
             all_sprites.add(en)
             count=0
@@ -386,7 +423,7 @@ try:
             point[1]+=1
             pygame.draw.circle(win, WHITE, point, 2)
 
-            if(point[1] >= HEIGHT):
+            if(point[1] >= height):
                 point[0] = random.randrange(0, 900)
                 point[1] = random.randrange(-10, -5)
         pygame.display.flip()
