@@ -402,7 +402,7 @@ try:
 
         if count == 50:
             
-            en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
+            en= enemy(random.randrange(0,width), random.randrange(0,height))
 
 
             enemygroup.add(en)
