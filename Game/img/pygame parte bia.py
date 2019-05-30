@@ -283,9 +283,11 @@ def RestaurarJanela():
 
 #    text=font.render("Lives: " + str(), 1, (190,2,20))
     placar=font.render("Score: " + str(score), 1, (190,2,20))
+    power1=font.render("Press S to Power: " + str(power), 1, (190,2,20))
 #    placar2=font.render("Score: " + str(char), 1, (190,2,20))
 
     win.blit(placar,(730,70))
+    win.blit(power1,(3,3))
 #    win.blit(placar2,(630,90))
         
         
@@ -348,6 +350,7 @@ try:
     bgsong.play(loops=-1)
     score=0
     lives=3
+    power=2
     while run:
       
         clock.tick(30)
@@ -451,8 +454,11 @@ try:
                     projeteis.append(bullet)
                     all_sprites.add(bullet)
                     bullets.add(bullet)
-                if event.key == pygame.K_s:
-                        man.invencivel=270
+                    
+                if power<=2:
+                     if event.key == pygame.K_s:
+                         man.invencivel=270
+                         power-=1
 
              
             if event.type == pygame.KEYUP:
