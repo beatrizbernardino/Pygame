@@ -6,13 +6,13 @@ pygame.init()
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
 #WIDTH=600
 #HEIGHT=600
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
 width=900
 height=600
 win = pygame.display.set_mode((900,600))
@@ -397,19 +397,14 @@ try:
                     man.speedx = 0
 
 
-<<<<<<< HEAD
+
                 
 
         if count == 50:
             
             en= enemy(random.randrange(0,HEIGHT), random.randrange(0,HEIGHT))
 
-=======
-                    
-        if count == 100:
-            en= enemy(random.randrange(0,height), random.randrange(0,height))
-            #random.choice([0,900])
->>>>>>> 687373a42713ba88e5a29059f8dcceb7b43b2027
+
             enemygroup.add(en)
             all_sprites.add(en)
             count=0
