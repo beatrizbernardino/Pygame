@@ -35,7 +35,8 @@ final=pygame.image.load('final.jpg').convert()
 Bg=pygame.transform.scale(bg,(900,600))
 clock = pygame.time.Clock()
 telafinal=pygame.transform.scale(final,(900,600))
-
+vida=pygame.image.load('final.jpg').convert()
+vida2=pygame.transform.scale(vida,(20,30))
 
 
 player_img = pygame.image.load('pegiga.png') 
@@ -45,11 +46,10 @@ enemygroup = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 all_platforms=pygame.sprite.Group()
 
-class player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height):
         pygame.sprite.Sprite.__init__(self)
 #        self.image= char
-#        self.image= pygame.transform.scale(char,(48,64))
 ##        self.image.set_colorkey((0,0,0))
 #        self.rect=self.image.get_rect()
 #        self.rect.x=x
@@ -59,47 +59,28 @@ class player(pygame.sprite.Sprite):
         self.pulo = False
         self.vel = 10
         self.jumpCount = 10
-        self.direita = True
+        self.direita = False
         self.esquerda = False
-        self.parado = False
+        self.parado = True
         self.radius = 32
         self.invencivel=False
         self.index=0
+        self.images=[]
         
-        
-        
-        if self.direita:
-            self.images=[pygame.image.load("an direita 1.png"),pygame.image.load("an direita 2.png"), pygame.image.load("an direita 3.png")]
-            self.image = self.images[self.index]
-            self.image= pygame.transform.scale(self.images[self.index],(48,64))
-            self.rect=self.image.get_rect()
-            self.image.set_colorkey((0,0,0))
-            self.rect.x=x
-            self.rect.y=y
-            
-        if self.esquerda:
-            
-            self.images=[pygame.image.load("an esquerda 1.png"),pygame.image.load("an esquerda2.png"), pygame.image.load("an esquerda 3.png")]
-            self.image = self.images[self.index]
-            self.image= pygame.transform.scale(self.images[self.index],(48,64))
-            self.image.set_colorkey((0,0,0))
-            self.rect =self.image.get_rect()
-            self.rect.x=x
-            self.rect.y=y
             
     def update(self):
-        
-        self.index += 1
-        if self.index >= len(self.images):
-            self.index = 0
-        self.image = self.images[self.index]
-        center = self.rect.center
-        self.rect = self.image.get_rect()
-        self.rect.center = center
-        self.rect.x += self.speedx
-        self.rect.y+=self.speedy
-        
         if not self.parado:
+            
+            self.index+=1
+            if self.index > len(self.images) - 1:
+                self.index = 0
+        
+            self.image = self.images[self.index]
+            center = self.rect.center
+            self.rect = self.image.get_rect()
+            self.rect.center = center
+            self.rect.x += self.speedx
+            self.rect.y+=self.speedy
             self.speedy += 1 # Gravidade
             
         if self.speedx != 0:
@@ -109,7 +90,46 @@ class player(pygame.sprite.Sprite):
             self.rect.right = width
         if self.rect.left < 0:
             self.rect.left = 0
-
+    
+    def update_sprite(self):
+        
+        if self.parado:
+            
+            self.image= char
+            self.image= pygame.transform.scale(self.image,(48,64))
+            self.rect=self.image.get_rect()
+            self.image.set_colorkey((255,255,255))
+            self.rect.x=x
+            self.rect.y=y
+        
+        if self.direita:
+            self.index=0
+            for i in range (2):
+                img="papainoel{}.png".format(i)   
+                papain=pygame.image.load(img).convert_alpha()
+                papain=pygame.transform.scale(papain,(48,64))
+                self.papain.set_colorkey((255,255,255))
+                self.images.append(papain)
+                self.image = self.images[self.index]
+                self.rect=self.image.get_rect()
+                self.image.set_colorkey((255,255,255))
+                self.rect.x=x
+                self.rect.y=y
+            
+        if self.esquerda:
+            
+            self.images=[pygame.image.load("papainoel1.png").convert_alpha(),pygame.image.load("papainoel3.png").convert_alpha(), pygame.image.load("papainoel4.png").convert_alpha()]
+            self.image = self.images[self.index]
+            self.image= pygame.transform.scale(self.images[self.index],(48,64))
+            self.image.set_colorkey((255,255,255))
+            self.rect =self.image.get_rect()
+            self.rect.x=x
+            self.rect.y=y
+        
+        def do(self):
+            self.update_sprite()
+            self.update()
+            
 class enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -139,16 +159,10 @@ class enemy(pygame.sprite.Sprite):
             
             elif(self.rect.y + 16 < self.heroy):
                self.rect.y += self.speedy
-           
-    def sethero(self, x, y):
-        self.herox = x
-        self.heroy = y
-   
-    def hit(self):
-        if self.vida>0:
-            self.vida -=1
-        else:
-            self.visible = False
+    
+    def do(self):
+        self.update()
+        
 
 class projetil(pygame.sprite.Sprite):
     def __init__(self,x,y,pew,facing):
@@ -165,9 +179,6 @@ class projetil(pygame.sprite.Sprite):
         if self.rect.centerx>width or self.rect.centerx<0:
             self.kill()
             
-            
-            
-        
 
 class Platform(pygame.sprite.Sprite):
 
@@ -246,18 +257,19 @@ for i in range (4):
 
             
 def RestaurarJanela():
-    all_sprites.update()
+    all_sprites.do()
     win.blit(Bg, (0,0))
+    win.blit(vida2*3, (300,450))
     all_sprites.draw(win)
-    text=font.render("Lives: " + str(lives), 1, (0,255,0))
-    placar=font.render("Score: " + str(score), 1, (0,255,0))
+    text=font.render("Lives: " + str(lives), 1, (190,2,20))
+    placar=font.render("Score: " + str(score), 1, (190,2,20))
     win.blit(text,(730,10))
     win.blit(placar,(730,50))
     pygame.display.update()
 
 
    
-man=player(1,450,64,64)
+man=Player(1,450,64,64)
 playergroup.add(man)
 all_sprites.add(man)
 projeteis=[]
