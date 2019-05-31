@@ -309,15 +309,13 @@ def RestaurarJanela():
 
 #text=font.render("Lives: " + str(lives), 1, (190,2,20))
     placar=font.render("Score: " + str(score), 1, (190,2,20))
-<<<<<<< HEAD
+
 #    win.blit(text,(730,10))
 #    win.blit(placar,(730,50))
 
 
 #    text=font.render("Lives: " + str(), 1, (190,2,20))
-=======
     power1=font.render("Press S to Power: " + str(power), 1, (190,2,20))
->>>>>>> c45fa0b859d0a76012709fbe8e873b2d2b8b989c
 #    placar2=font.render("Score: " + str(char), 1, (190,2,20))
 
     win.blit(placar,(730,70))
@@ -503,7 +501,7 @@ try:
 
 
                 
-<<<<<<< HEAD
+
         if score>20: 
             if count == 50:
                 
@@ -519,7 +517,7 @@ try:
                 enemygroup.add(en)
                 all_sprites.add(en)
                 count=0
-=======
+
 #        if count == 10000:
 #            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
         if count == 80:
@@ -530,7 +528,7 @@ try:
             enemygroup.add(en)
             all_sprites.add(en)
             count=0
->>>>>>> c45fa0b859d0a76012709fbe8e873b2d2b8b989c
+
         count+=1
                 
         RestaurarJanela()
