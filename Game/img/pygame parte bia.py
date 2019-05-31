@@ -6,13 +6,13 @@ pygame.init()
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
 #WIDTH=600
 #HEIGHT=600
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
 width=900
 height=600
 win = pygame.display.set_mode((900,600))
@@ -309,14 +309,19 @@ def RestaurarJanela():
 
 #text=font.render("Lives: " + str(lives), 1, (190,2,20))
     placar=font.render("Score: " + str(score), 1, (190,2,20))
+<<<<<<< HEAD
 #    win.blit(text,(730,10))
 #    win.blit(placar,(730,50))
 
 
 #    text=font.render("Lives: " + str(), 1, (190,2,20))
+=======
+    power1=font.render("Press S to Power: " + str(power), 1, (190,2,20))
+>>>>>>> c45fa0b859d0a76012709fbe8e873b2d2b8b989c
 #    placar2=font.render("Score: " + str(char), 1, (190,2,20))
 
     win.blit(placar,(730,70))
+    win.blit(power1,(3,3))
 #    win.blit(placar2,(630,90))
         
         
@@ -379,6 +384,7 @@ try:
     bgsong.play(loops=-1)
     score=0
     lives=3
+    power=2
     while run:
       
         clock.tick(30)
@@ -482,8 +488,11 @@ try:
                     projeteis.append(bullet)
                     all_sprites.add(bullet)
                     bullets.add(bullet)
-                if event.key == pygame.K_s:
-                        man.invencivel=270
+                    
+                if power<=2:
+                     if event.key == pygame.K_s:
+                         man.invencivel=270
+                         power-=1
 
              
             if event.type == pygame.KEYUP:
@@ -492,7 +501,9 @@ try:
                 if event.key == pygame.K_d:
                     man.speedx = 0
 
+
                 
+<<<<<<< HEAD
         if score>20: 
             if count == 50:
                 
@@ -508,6 +519,18 @@ try:
                 enemygroup.add(en)
                 all_sprites.add(en)
                 count=0
+=======
+#        if count == 10000:
+#            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
+        if count == 80:
+            
+            en= enemy(random.randrange(0,width), random.randrange(0,height))
+
+
+            enemygroup.add(en)
+            all_sprites.add(en)
+            count=0
+>>>>>>> c45fa0b859d0a76012709fbe8e873b2d2b8b989c
         count+=1
                 
         RestaurarJanela()
