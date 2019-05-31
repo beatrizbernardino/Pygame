@@ -21,6 +21,9 @@ pygame.display.set_caption("missão no Polo Norte")
 
 walkRight = [pygame.image.load('papainoel5.png'), pygame.image.load('papainoel6.png'), pygame.image.load('papainoel7.png')]
 walkLeft = [pygame.image.load('papainoel1.png'), pygame.image.load('papainoel3.png'), pygame.image.load('papainoel4.png')]
+walkpoderR = [pygame.image.load('papainoel5p.png'), pygame.image.load('papainoel6p.png'), pygame.image.load('papainoel7p.png')]
+walkpoderL = [pygame.image.load('papainoel1p.png'), pygame.image.load('papainoel3p.png'), pygame.image.load('papainoel4p.png')]
+stan=pygame.image.load('papainp.png')
 snd_dir = path.join(path.dirname(__file__))
 img_dir=path.join(path.dirname(__file__))
 bg = pygame.image.load('snow.png')
@@ -80,49 +83,9 @@ class Player(pygame.sprite.Sprite):
         self.radius = 32
         self.invencivel=0
         self.sprite_right=0
-        self.sprite_left=0     
-#    def update(self):
-#        if not self.parado:
-#            
-#            self.rect.x += self.speedx
-#            self.rect.y+=self.speedy
-#            self.speedy += 1 # Gravidade
-#            
-#        if self.speedx != 0:
-#            man.parado = False
-#
-#        if self.rect.right > width:
-#            self.rect.right = width
-#        if self.rect.left < 0:
-#            self.rect.left = 0
-    
-#    def update_sprite(self):
-#        
-#        if self.parado:
-#            
-#            self.image= char
-#            self.image= pygame.transform.scale(self.image,(48,64))
-#            self.rect=self.image.get_rect()
-#            self.image.set_colorkey((255,255,255))
-#            self.rect.x=x
-#            self.rect.y=y
-#        
-#        if self.direita:
-#            self.index=0
-#            for i in range (2):
-#                img="papainoel{}.png".format(i)   
-#                papain=pygame.image.load(img).convert_alpha()
-#                papain=pygame.transform.scale(papain,(48,64))
-#                self.papain.set_colorkey((255,255,255))
-#                self.images.append(papain)
-#                self.image = self.images[self.index]
-#                self.rect=self.image.get_rect()
-#                self.image.set_colorkey((255,255,255))
-#                self.rect.x=x
-#                self.rect.y=y
-#
-#        self.sprite_left = 0
-#        self.sprite_right = 0
+        self.sprite_left=0    
+        self.sprite_invencivel=0
+
         
     def update_sprite(self):
         if self.direita:
@@ -137,10 +100,26 @@ class Player(pygame.sprite.Sprite):
                 self.sprite_left = 0
             self.image = pygame.transform.scale(walkLeft[self.sprite_left],(48,64))
 
-        
-    
-        if self.pulo or self.parado and self.speedx==0:
-            self.image = pygame.transform.scale(char,(48,64))
+        if self.invencivel>0:
+            if self.esquerda:
+                self.sprite_invencivel += 1
+                if self.sprite_invencivel == len(walkpoderL) - 1:
+                    self.sprite_invencivel = 0
+                self.image = pygame.transform.scale(walkpoderL[self.sprite_invencivel],(48,64))
+            if self.direita:
+                self.sprite_invencivel += 1
+                if self.sprite_invencivel == len(walkpoderR) - 1:
+                    self.sprite_invencivel = 0
+                self.image = pygame.transform.scale(walkpoderR[self.sprite_invencivel],(48,64))
+                
+ 
+            if self.pulo or self.parado and self.speedx==0:
+                self.image = pygame.transform.scale(stan,(48,64))
+
+        else:
+            
+            if self.pulo or self.parado and self.speedx==0:
+                self.image = pygame.transform.scale(char,(48,64))
 
                 
         
@@ -185,13 +164,10 @@ class Player(pygame.sprite.Sprite):
             self.rect.right = width
         if self.rect.left < 0:
             self.rect.left = 0
-<<<<<<< HEAD
-         
-=======
             
         if self.invencivel > 0:
             self.invencivel -= 1
->>>>>>> 47b6215ba95e254c9b8a96b2b5b3fcb2ac15f3e8
+
 class enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -517,22 +493,21 @@ try:
                     man.speedx = 0
 
                 
-#        if count == 10000:
-#            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
-        if count == 80:
-            
-            en= enemy(random.randrange(0,width), random.randrange(0,height))
+        if score>20: 
+            if count == 50:
+                
+                en= enemy(random.randrange(0,width), random.randrange(0,height))
+                enemygroup.add(en)
+                all_sprites.add(en)
+                count=0
 
-
-
-                    
-#        if count == 100:
-#            en= enemy(random.randrange(0,height), random.randrange(0,height))
-            #random.choice([0,900])
-
-            enemygroup.add(en)
-            all_sprites.add(en)
-            count=0
+        else:
+            if count == 80:
+                
+                en= enemy(random.randrange(0,width), random.randrange(0,height))
+                enemygroup.add(en)
+                all_sprites.add(en)
+                count=0
         count+=1
                 
         RestaurarJanela()
