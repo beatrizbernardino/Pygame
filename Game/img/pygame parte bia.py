@@ -8,19 +8,18 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
-
-#WIDTH=600
-#HEIGHT=600
+vermelhozinho = (190, 2, 20)
+rate=27
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 width=900
 height=600
 win = pygame.display.set_mode((900,600))
-pygame.display.set_caption("missão no Polo Norte")
+pygame.display.set_caption("Missão Polar")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-walkRight = [pygame.image.load('papainoel5.png'), pygame.image.load('papainoel6.png'), pygame.image.load('papainoel7.png')]
-walkLeft = [pygame.image.load('papainoel1.png'), pygame.image.load('papainoel3.png'), pygame.image.load('papainoel4.png')]
+walkRight = [pygame.image.load('papainoel3.png'), pygame.image.load('papainoel4.png'), pygame.image.load('papainoel5.png')]
+walkLeft = [pygame.image.load('papainoel0.png'), pygame.image.load('papainoel1.png'), pygame.image.load('papainoel2.png')]
 walkpoderR = [pygame.image.load('papainoel5p.png'), pygame.image.load('papainoel6p.png'), pygame.image.load('papainoel7p.png')]
 walkpoderL = [pygame.image.load('papainoel1p.png'), pygame.image.load('papainoel3p.png'), pygame.image.load('papainoel4p.png')]
 stan=pygame.image.load('papainp.png')
@@ -43,9 +42,10 @@ telafinal=pygame.transform.scale(final,(900,600))
 
 vida=pygame.image.load('ra.jpg').convert()
 vida.set_colorkey((255,255,255))
-vitaoradical0=pygame.transform.scale(vida,(55,55))
-vitaoradical1=pygame.transform.scale(vida,(55,55))
-vitaoradical2=pygame.transform.scale(vida,(55,55))
+tamanhov=60,40
+vida0=pygame.transform.scale(vida,(tamanhov))
+vida1=pygame.transform.scale(vida,(tamanhov))
+vida2=pygame.transform.scale(vida,(tamanhov))
 
 
 
@@ -66,20 +66,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.x=x
         self.rect.y=y
         self.invencivel=0
-#        self.image= char
-##        self.image.set_colorkey((0,0,0))
-#        self.rect=self.image.get_rect()
-#        self.rect.x=x
-#        self.rect.y=y
-
         self.speedx=0
         self.speedy=0
         self.pulo = False
         self.vel = 10
         self.jumpCount = 10
-        self.direita = False
+        self.direita = True
         self.esquerda = False
-        self.parado = True
+        self.parado = False
         self.radius = 32
         self.invencivel=0
         self.sprite_right=0
@@ -121,36 +115,8 @@ class Player(pygame.sprite.Sprite):
             if self.pulo or self.parado and self.speedx==0:
                 self.image = pygame.transform.scale(char,(48,64))
 
-                
-        
-#        if self.direita:
-#            self.images=[pygame.image.load("an direita 1.png"),pygame.image.load("an direita 2.png"), pygame.image.load("an direita 3.png")]
-#            self.image = self.images[self.index]
-#            self.image= pygame.transform.scale(self.images[self.index],(48,64))
-#            self.rect=self.image.get_rect()
-#            self.image.set_colorkey((0,0,0))
-#            self.rect.x=x
-#            self.rect.y=y
-#            
-#        if self.esquerda:
-#            
-#            self.images=[pygame.image.load("an esquerda 1.png"),pygame.image.load("an esquerda2.png"), pygame.image.load("an esquerda 3.png")]
-#            self.image = self.images[self.index]
-#            self.image= pygame.transform.scale(self.images[self.index],(48,64))
-#            self.image.set_colorkey((0,0,0))
-#            self.rect =self.image.get_rect()
-#            self.rect.x=x
-#            self.rect.y=y
-            
     def update(self):
-        
-#        self.index += 1
-#        if self.index >= len(self.images):
-#            self.index = 0
-#        self.image = self.images[self.index]
-#        center = self.rect.center
-#        self.rect = self.image.get_rect()
-#        self.rect.center = center
+     
         self.rect.x += self.speedx
         self.rect.y+=self.speedy
         
@@ -203,12 +169,6 @@ class enemy(pygame.sprite.Sprite):
     def sethero(self, x, y):
         self.herox = x
         self.heroy = y
-   
-#    def hit(self):
-#        if self.vida>0:
-#            self.vida -=1
-#        else:
-#            self.visible = False
 
 
 class projetil(pygame.sprite.Sprite):
@@ -236,18 +196,15 @@ class Platform(pygame.sprite.Sprite):
             filename = 'snow_77.png'
         elif tipo== "middle":
            filename='snow_54.png'
+           
+           
         player_img=pygame.image.load(path.join(img_dir,filename)).convert()
-        self.image=player_img
-        
-        self.image=pygame.transform.scale(player_img,(w,h))
-        
+        self.image=player_img 
+        self.image=pygame.transform.scale(player_img,(w,h))    
         self.rect=self.image.get_rect()
         self.rect.height = 5
-        #
-        
         self.rect.centerx=x
         self.rect.bottom=y
-        print(self.rect)
         self.image.set_colorkey((0,0,0))
    
 
@@ -297,47 +254,36 @@ for i in range (4):
         all_sprites.add(p1)
         all_platforms.add(p1)
 
-
-
             
-def RestaurarJanela():
+def RestaurarJanela(man):
 
     man.update_sprite() 
     all_sprites.update()
     win.blit(Bg, (0,0))
     all_sprites.draw(win)
-
-#text=font.render("Lives: " + str(lives), 1, (190,2,20))
     placar=font.render("Score: " + str(score), 1, (190,2,20))
-
-#    win.blit(text,(730,10))
-#    win.blit(placar,(730,50))
-
-
-#    text=font.render("Lives: " + str(), 1, (190,2,20))
     power1=font.render("Press S to Power: " + str(power), 1, (190,2,20))
-#    placar2=font.render("Score: " + str(char), 1, (190,2,20))
-
     win.blit(placar,(730,70))
     win.blit(power1,(3,3))
-#    win.blit(placar2,(630,90))
-        
-        
+     
     if lives==3:
-        win.blit(vitaoradical0,(730,10))
-        win.blit(vitaoradical1,(785,10))
-        win.blit(vitaoradical2,(840,10))
+        win.blit(vida0,(730,10))
+        win.blit(vida1,(785,10))
+        win.blit(vida2,(840,10))
     if lives==2:
-        win.blit(vitaoradical0,(730,10))
-        win.blit(vitaoradical1,(785,10))
+        win.blit(vida0,(730,10))
+        win.blit(vida1,(785,10))
     if lives==1:
-         win.blit(vitaoradical0,(730,10))
+         win.blit(vida0,(730,10))
 
+    if man.invencivel > 0:
         
-#    text=font.render("Lives: " + str(lives), 1, (0,255,0))
-#    placar=font.render("Score: " + str(score), 1, (0,255,0))
- 
-#    win.blit(placar,(730,50))
+        total_sec = man.invencivel//rate
+        msg = "Acabou!!"
+        if man.invencivel>rate:
+            msg = "Poder ativado!: 0:"+str(total_sec)
+        text = font.render(msg, True, vermelhozinho)
+        win.blit(text, (355, 50))
 
     pygame.display.update()
 
@@ -350,8 +296,10 @@ projeteis=[]
 font = pygame.font.SysFont("comicsana",40,True)
 count=0
 run = True
+font = pygame.font.SysFont("Somic Sans MS", 30)
 
-        
+ 
+       
 high_score_file = open("high_score_file.txt", "r")
 high_score = int(high_score_file.read())
 high_score_file.close()  
@@ -359,6 +307,7 @@ high_score_file.close()
 numeroparticulas=100;
 
 neve_list=[]
+
 for i in range(numeroparticulas):
     x = random.randrange(0, 900)
     y = random.randrange(0, 600)
@@ -373,19 +322,20 @@ while not end_it:
         if event.type==pygame.QUIT:
             pygame.quit()
             quit()
-    win.blit(inicial, (0,0))
-   
-    
+            
+    win.blit(inicial, (0,0))    
     pygame.display.flip()
     
 try:
+    
     bgsong.play(loops=-1)
     score=0
     lives=3
     power=2
+
     while run:
       
-        clock.tick(30)
+        clock.tick(rate)
         
         hits = pygame.sprite.groupcollide(all_platforms, playergroup, False, False)
         for hit in hits:
@@ -418,9 +368,9 @@ try:
             while not a:
                 myfont=pygame.font.SysFont("Britannic Bold", 60)
                 vitorlindo=pygame.font.SysFont("Britannic Bold", 100)
-                b=myfont.render("Score:"+ str(score),2, (190,2,20) )
-                nlabel=vitorlindo.render("Game Over", 1, (190,2,20))
-                sco=myfont.render("HighScore:"+ str(high_score),2, (190,2,20) )
+                b=myfont.render("Score:"+ str(score),2, vermelhozinho )
+                nlabel=vitorlindo.render("Game Over", 1, vermelhozinho)
+                sco=myfont.render("HighScore:"+ str(high_score),2, vermelhozinho )
                 
                 for event in pygame.event.get():
                     if event.type==pygame.QUIT:
@@ -432,26 +382,18 @@ try:
                     win.blit(sco,(150,height-150))
                     pygame.display.flip()
                     run =False
-                                   
+           
+            
+                        
         hits =pygame.sprite.groupcollide(enemygroup,bullets , True, False, ) 
         if hits:
              boom.play()
              score+=1
-    
+             
+                 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-#                counter -= 1
-#                text = str(counter).rjust(3) if counter > 0 else 'Acabou!'
-#            if event.type == pygame.QUIT: break
-#        else:
-#            screen.fill((255, 255, 255))
-#            screen.blit(font.render(text, True, (190,2,20)), (400,50 ))
-#            pygame.display.flip()
-#            clock.tick(60)
-#            continue
-#        break
-
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
@@ -464,8 +406,11 @@ try:
                     man.pulo = True
                     man.speedy = -20
                     man.parado = False
-    
                     
+            if keys[pygame.K_s]:
+                 man.invencivel=270
+                 
+                                    
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
                     man.speedx -= man.vel
@@ -486,13 +431,13 @@ try:
                     projeteis.append(bullet)
                     all_sprites.add(bullet)
                     bullets.add(bullet)
-                    
+          
                 if power<=2:
                      if event.key == pygame.K_s:
-                         man.invencivel=270
+                         man.invencivel= rate * 5
                          power-=1
-
-             
+                     if power==0:
+                         man.invencivel=False
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     man.speedx = 0
@@ -501,6 +446,7 @@ try:
 
 
                 
+
 
         if score>20: 
             if count == 50:
@@ -518,20 +464,9 @@ try:
                 all_sprites.add(en)
                 count=0
 
-#        if count == 10000:
-#            en= enemy(random.choice([0,900]), random.randrange(0,HEIGHT))
-        if count == 80:
-            
-            en= enemy(random.randrange(0,width), random.randrange(0,height))
-
-
-            enemygroup.add(en)
-            all_sprites.add(en)
-            count=0
-
         count+=1
                 
-        RestaurarJanela()
+        RestaurarJanela(man)
         for en in enemygroup:
             en.sethero(man.rect.x, man.rect.y)
         
@@ -545,4 +480,5 @@ try:
         pygame.display.flip()
 finally:
     pygame.quit()
+#    sys.exit()
     quit()
