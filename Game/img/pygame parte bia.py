@@ -75,7 +75,6 @@ class Player(pygame.sprite.Sprite):
         self.esquerda = False
         self.parado = False
         self.radius = 32
-        self.invencivel=0
         self.sprite_right=0
         self.sprite_left=0    
         self.sprite_invencivel=0
@@ -281,7 +280,7 @@ def RestaurarJanela(man):
         total_sec = man.invencivel//rate
         msg = "Acabou!!"
         if man.invencivel>rate:
-            msg = "Poder ativado!: 0:"+str(total_sec)
+            msg = "Poder ativado: 0:"+str(total_sec)
         text = font.render(msg, True, vermelhozinho)
         win.blit(text, (355, 50))
 
@@ -408,7 +407,9 @@ try:
                     man.parado = False
                     
             if keys[pygame.K_s]:
-                 man.invencivel=270
+                if power>0:
+            
+                    man.invencivel=270
                  
                                     
             if event.type == pygame.KEYDOWN:
@@ -432,12 +433,11 @@ try:
                     all_sprites.add(bullet)
                     bullets.add(bullet)
           
-                if power<=2:
+                if power>0:
                      if event.key == pygame.K_s:
-                         man.invencivel= rate * 5
+                         man.invencivel= rate * 10
                          power-=1
-                     if power==0:
-                         man.invencivel=False
+                
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_a:
                     man.speedx = 0
