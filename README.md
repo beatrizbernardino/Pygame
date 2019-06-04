@@ -8,7 +8,7 @@
 
 # Como abrir
 
-   O arquivo do jogo, chamado parte bia, encontra-se na pasta "img", dentro da pasta game. Após clonar o repositório, é só abri-lo em alguma plataforma python e está pronto para jogar.
+   O arquivo do jogo, chamado "Missão Polar", encontra-se na pasta "img", dentro da pasta game. Após clonar o repositório, é só abri-lo em alguma plataforma python e está pronto para jogar.
    
    
   # Como jogar
