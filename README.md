@@ -30,8 +30,8 @@ S- aciona o poder
 # Autores
 Beatriz Rianho Bernardino
 
-Julia Ribeiro Martins
+Júlia Ribeiro Martins
 
-Victor Irulegui Bueno Bandeira
+Vitor Irulegui Bueno Bandeira
 
 
