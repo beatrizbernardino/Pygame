@@ -364,7 +364,7 @@ try:
                 b=myfont.render("Score:"+ str(score),2, vermelhozinho )
                 nlabel=vitorlindo.render("Game Over", 1, vermelhozinho)
                 sco=myfont.render("HighScore:"+ str(high_score),2, vermelhozinho )
-                
+                #Quando o jogo acaba, a tela final feita é exibida  (linhas: 372 a 375) , e nela podemos ver uma oportunidade  de reduzir acoplamento, pois toda as informações que devem aparecer nela estão em função do width, height, anteriormente estabelecidos, e outros valores que são hardcoded. Portanto, teremos valores hardcoded em função de outros valores hardcoded.
                 for event in pygame.event.get():
                     if event.type==pygame.QUIT:
                         pygame.quit()
